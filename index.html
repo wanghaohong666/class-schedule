@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鍒濅竴1鐝櫤鑳借绋嬭〃</title>
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --bg: #f0f2f5;
+            --bg-card: rgba(255,255,255,0.72);
+            --text: #1a1a2e;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --border: rgba(0,0,0,0.08);
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+            --glass: rgba(255,255,255,0.65);
+            --glass-border: rgba(255,255,255,0.45);
+            --blur: blur(16px);
+
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-bg: rgba(99,102,241,0.08);
+
+            --morning: #dbeafe;
+            --morning-text: #1e40af;
+            --afternoon: #fef3c7;
+            --afternoon-text: #92400e;
+            --memorize: #d1fae5;
+            --memorize-text: #065f46;
+            --break: #ede9fe;
+            --break-text: #5b21b6;
+
+            --current-glow: 0 0 0 3px var(--accent);
+            --next-border: #f59e0b;
+
+            --header-bg: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%);
+            --header-text: #fff;
+
+            --banner-bg: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --font: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-card: rgba(30,41,59,0.78);
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(255,255,255,0.06);
+            --shadow: 0 4px 24px rgba(0,0,0,0.30);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.40);
+            --glass: rgba(30,41,59,0.70);
+            --glass-border: rgba(255,255,255,0.08);
+            --blur: blur(20px);
+
+            --accent-bg: rgba(99,102,241,0.14);
+
+            --morning: rgba(59,130,246,0.18);
+            --morning-text: #93c5fd;
+            --afternoon: rgba(251,191,36,0.18);
+            --afternoon-text: #fcd34d;
+            --memorize: rgba(16,185,129,0.18);
+            --memorize-text: #6ee7b7;
+            --break: rgba(139,92,246,0.18);
+            --break-text: #c4b5fd;
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Background Decoration ===== */
+        .bg-decoration {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.12;
+            animation: blobFloat 20s ease-in-out infinite;
+        }
+        .bg-blob:nth-child(1) {
+            width: 500px; height: 500px;
+            background: #818cf8;
+            top: -15%; left: -10%;
+            animation-delay: 0s;
+        }
+        .bg-blob:nth-child(2) {
+            width: 400px; height: 400px;
+            background: #f472b6;
+            bottom: -12%; right: -8%;
+            animation-delay: -7s;
+        }
+        .bg-blob:nth-child(3) {
+            width: 350px; height: 350px;
+            background: #34d399;
+            top: 55%; left: 50%;
+            animation-delay: -14s;
+        }
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(0.9); }
+            75% { transform: translate(-80px, -40px) scale(1.05); }
+        }
+
+        /* ===== Layout ===== */
+        .app-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 20px 40px;
+        }
+
+        /* ===== Banner ===== */
+        .banner {
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            background: var(--banner-bg);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 14px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(49,46,129,0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            backdrop-filter: blur(8px);
+            transition: all var(--transition);
+        }
+        .banner-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            animation: dotPulse 1.4s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        .banner-dot.active { background: #4ade80; }
+        .banner-dot.break { background: #fbbf24; }
+        .banner-dot.ended { background: #94a3b8; }
+        .banner-dot.weekend { background: #a78bfa; }
+        @keyframes dotPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+            50% { box-shadow: 0 0 0 10px rgba(74,222,128,0); }
+        }
+        .banner-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+            min-width: 200px;
+        }
+
+        /* ===== Top Bar ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            max-width: 360px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            color: var(--text);
+            font-size: 14px;
+            font-family: var(--font);
+            transition: all var(--transition);
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-bg);
+        }
+        .search-box .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+            pointer-events: none;
+        }
+        .search-clear {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+        .search-clear:hover { color: var(--text); background: var(--border); }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border);
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font);
+            transition: all var(--transition);
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .icon-btn:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .icon-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* ===== Day Tabs ===== */
+        .day-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .day-tabs::-webkit-scrollbar { display: none; }
+        .day-tab {
+            flex: 1;
+            min-width: 64px;
+            padding: 10px 8px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font);
+            text-align: center;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .day-tab:hover { border-color: var(--accent); color: var(--text); }
+        .day-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+        }
+        .day-tab .day-label { font-size: 11px; opacity: 0.7; display: block; }
+
+        /* ===== Timetable Card ===== */
+        .timetable-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 24px;
+            overflow: hidden;
+            transition: all var(--transition);
+        }
+        .timetable-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .timetable-header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #312e81, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+        [data-theme="dark"] .timetable-header h1 {
+            background: linear-gradient(135deg, #a5b4fc, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        .timetable-header .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== Table ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+            -webkit-overflow-scrolling: touch;
+        }
+        table.timetable {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: separate;
+            border-spacing: 4px;
+        }
+        table.timetable thead th {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 12px 8px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        table.timetable thead th:first-child {
+            border-radius: 8px;
+        }
+        table.timetable tbody td {
+            padding: 10px 8px;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            min-width: 90px;
+        }
+        table.timetable tbody td:first-child {
+            font-weight: 700;
+            font-size: 13px;
+            cursor: default;
+        }
+        table.timetable tbody td .time-sub {
+            display: block;
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+        /* Period types */
+        td.type-morning {
+            background: var(--morning);
+            color: var(--morning-text);
+        }
+        td.type-afternoon {
+            background: var(--afternoon);
+            color: var(--afternoon-text);
+        }
+        td.type-memorize {
+            background: var(--memorize);
+            color: var(--memorize-text);
+        }
+        td.type-break {
+            background: var(--break);
+            color: var(--break-text);
+        }
+
+        /* Current period glow */
+        td.current-period {
+            box-shadow: var(--current-glow);
+            animation: currentPulse 2s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes currentPulse {
+            0%, 100% { box-shadow: 0 0 0 3px var(--accent); }
+            50% { box-shadow: 0 0 0 8px rgba(99,102,241,0.15), 0 0 0 3px var(--accent); }
+        }
+        td.next-period {
+            box-shadow: inset 0 0 0 3px var(--next-border);
+        }
+        td.past-period {
+            opacity: 0.55;
+        }
+
+        /* Search highlight */
+        td.search-highlight {
+            background: #fef08a !important;
+            color: #713f12 !important;
+            box-shadow: 0 0 0 3px rgba(250,204,21,0.4);
+            animation: highlightFlash 0.6s ease-out;
+        }
+        [data-theme="dark"] td.search-highlight {
+            background: rgba(250,204,21,0.35) !important;
+            color: #fef08a !important;
+        }
+        @keyframes highlightFlash {
+            0% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== Footer ===== */
+        .timetable-footer {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .legend-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .legend-inline span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legend-dot {
+            width: 12px; height: 12px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        /* ===== Detail Popup / Modal ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition);
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 28px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform var(--transition);
+        }
+        .modal-overlay.show .modal-card {
+            transform: translateY(0);
+        }
+        .modal-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .modal-card .modal-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .modal-card .modal-day {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .modal-card .modal-status {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .modal-card .modal-close {
+            margin-top: 18px;
+            padding: 8px 28px;
+            border-radius: 50px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font);
+            transition: all var(--transition);
+        }
+        .modal-card .modal-close:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        /* ===== Notification Permission Prompt ===== */
+        .notif-prompt {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 500;
+            background: var(--bg-card);
+            backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 16px 20px;
+            max-width: 320px;
+            font-size: 13px;
+            color: var(--text);
+        }
+        .notif-prompt.show { display: block; }
+        .notif-prompt button {
+            margin-top: 10px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: var(--font);
+            margin-right: 6px;
+        }
+        .notif-prompt .btn-deny {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* ===== Print ===== */
+        @media print {
+            .bg-decoration, .banner, .top-bar, .day-tabs, .timetable-footer,
+            .notif-prompt, .modal-overlay, .icon-btn { display: none !important; }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            .app-wrapper {
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            .timetable-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+                backdrop-filter: none !important;
+                padding: 12px !important;
+            }
+            .timetable-header h1 {
+                -webkit-text-fill-color: #000 !important;
+                background: none !important;
+            }
+            table.timetable {
+                border-spacing: 1px;
+                min-width: auto;
+            }
+            table.timetable thead th {
+                background: #333 !important;
+                color: #fff !important;
+            }
+            td.current-period { box-shadow: none !important; animation: none !important; }
+            td.next-period { box-shadow: none !important; }
+            td.past-period { opacity: 1 !important; }
+            @page { margin: 8mm; size: landscape; }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .app-wrapper { padding: 8px 10px 30px; }
+            .timetable-card { padding: 14px; }
+            .timetable-header h1 { font-size: 20px; }
+            table.timetable thead th { font-size: 12px; padding: 8px 4px; }
+            table.timetable tbody td { font-size: 12px; padding: 7px 4px; }
+            table.timetable tbody td:first-child { font-size: 11px; }
+            table.timetable tbody td .time-sub { font-size: 10px; }
+            .day-tab { font-size: 12px; padding: 7px 4px; }
+            .banner { padding: 10px 14px; font-size: 13px; }
+            .banner-text { font-size: 13px; }
+            .icon-btn { padding: 7px 12px; font-size: 12px; }
+            .top-bar { gap: 8px; }
+            .search-box { max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            table.timetable { min-width: 560px; }
+            .day-tabs { gap: 3px; }
+            .modal-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background decoration -->
+    <div class="bg-decoration">
+        <div class="bg-blob"></div>
+        <div class="bg-blob"></div>
+        <div class="bg-blob"></div>
+    </div>
+
+    <!-- Notification Permission Prompt -->
+    <div class="notif-prompt" id="notifPrompt">
+        <strong>寮€鍚笂璇炬彁閱掞紵</strong><br>鍏佽娴忚鍣ㄩ€氱煡锛屼笂璇惧墠5鍒嗛挓鑷姩鎻愰啋銆?        <br>
+        <button onclick="requestNotification()">濂界殑</button>
+        <button class="btn-deny" onclick="dismissNotifPrompt()">鏆備笉</button>
+    </div>
+
+    <div class="app-wrapper">
+
+        <!-- Banner -->
+        <div class="banner" id="banner">
+            <div class="banner-dot" id="bannerDot"></div>
+            <span class="banner-text" id="bannerText">姝ｅ湪鍔犺浇...</span>
+        </div>
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="search-box">
+                <span class="search-icon">&#x1F50D;</span>
+                <input type="text" id="searchInput" placeholder="鎼滅储璇剧▼..." autocomplete="off">
+                <button class="search-clear" id="searchClear">&times;</button>
+            </div>
+            <div class="toolbar-actions">
+                <button class="icon-btn" id="themeToggle" title="鍒囨崲鏆楅粦/鏄庝寒妯″紡">
+                    <span id="themeIcon">&#x1F319;</span> <span id="themeLabel">鏆楅粦</span>
+                </button>
+                <button class="icon-btn" id="printBtn" title="鎵撳嵃璇剧▼琛?>
+                    &#x1F5A8; 鎵撳嵃
+                </button>
+            </div>
+        </div>
+
+        <!-- Day Tabs -->
+        <div class="day-tabs" id="dayTabs"></div>
+
+        <!-- Timetable Card -->
+        <div class="timetable-card">
+            <div class="timetable-header">
+                <h1>鍒濅竴1鐝绋嬭〃</h1>
+                <div class="subtitle">2024-2025瀛﹀勾</div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="timetable" id="timetableTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="timetable-footer">
+                <div class="legend-inline">
+                    <span><span class="legend-dot" style="background:#dbeafe;"></span> 涓婂崍 45鍒嗛挓</span>
+                    <span><span class="legend-dot" style="background:#fef3c7;"></span> 涓嬪崍 40鍒嗛挓</span>
+                    <span><span class="legend-dot" style="background:#d1fae5;"></span> 鐢熷湴鑳屼功</span>
+                    <span><span class="legend-dot" style="background:#ede9fe;"></span> 鏃╄/鏅ㄧ粌</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <h3 id="modalCourse">--</h3>
+            <div class="modal-time" id="modalTime">--</div>
+            <div class="modal-day" id="modalDay">--</div>
+            <div class="modal-status" id="modalStatus">--</div>
+            <br>
+            <button class="modal-close" onclick="closeModal()">鍏抽棴</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== Data =====
+        const timetableData = {
+            days: ['鍛ㄤ竴', '鍛ㄤ簩', '鍛ㄤ笁', '鍛ㄥ洓', '鍛ㄤ簲'],
+            periods: [
+                { name: '鏃╄/鏅ㄧ粌', time: '7:30-7:50', duration: 20, type: 'break' },
+                { name: '绗?鑺?,   time: '8:00-8:45',   duration: 45, type: 'morning' },
+                { name: '绗?鑺?,   time: '8:55-9:40',   duration: 45, type: 'morning' },
+                { name: '绗?鑺?,   time: '9:50-10:35',  duration: 45, type: 'morning' },
+                { name: '鐢熷湴鑳屼功', time: '10:45-11:30', duration: 45, type: 'memorize' },
+                { name: '绗?鑺?,   time: '11:40-12:25', duration: 45, type: 'morning' },
+                { name: '绗?鑺?,   time: '14:40-15:20', duration: 40, type: 'afternoon' },
+                { name: '绗?鑺?,   time: '15:30-16:10', duration: 40, type: 'afternoon' },
+                { name: '鐢熷湴鑳屼功', time: '16:20-17:05', duration: 45, type: 'memorize' },
+                { name: '绗?鑺?,   time: '17:15-17:55', duration: 40, type: 'afternoon' },
+                { name: '绗?鑺?,   time: '18:05-18:45', duration: 40, type: 'afternoon' }
+            ],
+            courses: [
+                ['鍗囨棗', '涓撻鏁欒偛', '鍘嗗彶', '闊充箰', '鐢熷湴鑳屼功', '浣撹偛', '璇枃', '鏁板', '鐢熷湴鑳屼功', '缁煎悎瀹炶返', '鑻辫'],
+                ['鑻辫鏃╄', '鑻辫', '閬撴硶', '鐗╃悊', '鐢熷湴鑳屼功', '鐢熺墿', '浣撹偛', '缇庢湳', '鐢熷湴鑳屼功', '璇枃', '鏁板'],
+                ['鐢熺墿鏃╄', '鐢熺墿', '璇枃', '閬撴硶', '鐢熷湴鑳屼功', '鍦扮悊', '鑻辫', '浣撹偛', '鐢熷湴鑳屼功', '鏁板', '鐗╃悊'],
+                ['璇枃鏃╄', '璇枃', '鑻辫', '鍦扮悊', '鐢熷湴鑳屼功', '淇℃伅绉戞妧', '鏁板', '鏁板', '鐢熷湴鑳屼功', '鐗╃悊', '鐢熺墿'],
+                ['璺戞搷', '鏁板', '璇枃', '鐢熺墿', '鐢熷湴鑳屼功', '鍘嗗彶', '鍔冲姩', '蹇冪悊鍋ュ悍', '鐢熷湴鑳屼功', '鑻辫', '鍦扮悊']
+            ]
+        };
+
+        // ===== State =====
+        let state = {
+            now: new Date(),
+            selectedDay: -1, // -1 means auto (today if weekday)
+            currentPeriodIdx: -1,
+            nextPeriodIdx: -1,
+            isSchoolDay: false,
+            searchTerm: '',
+            notifiedPeriods: new Set(),
+            notificationGranted: false
+        };
+
+        // ===== DOM Refs =====
+        const $banner = document.getElementById('banner');
+        const $bannerDot = document.getElementById('bannerDot');
+        const $bannerText = document.getElementById('bannerText');
+        const $dayTabs = document.getElementById('dayTabs');
+        const $thead = document.querySelector('#timetableTable thead');
+        const $tbody = document.querySelector('#timetableTable tbody');
+        const $searchInput = document.getElementById('searchInput');
+        const $searchClear = document.getElementById('searchClear');
+        const $modalOverlay = document.getElementById('modalOverlay');
+        const $modalCourse = document.getElementById('modalCourse');
+        const $modalTime = document.getElementById('modalTime');
+        const $modalDay = document.getElementById('modalDay');
+        const $modalStatus = document.getElementById('modalStatus');
+        const $themeToggle = document.getElementById('themeToggle');
+        const $themeIcon = document.getElementById('themeIcon');
+        const $themeLabel = document.getElementById('themeLabel');
+        const $notifPrompt = document.getElementById('notifPrompt');
+
+        // ===== Helpers =====
+        function parseTime(timeStr) {
+            const [h, m] = timeStr.split(':').map(Number);
+            return h * 60 + m;
+        }
+
+        function getDayIndex() {
+            const d = state.now.getDay(); // 0=Sun
+            return (d >= 1 && d <= 5) ? d - 1 : 0;
+        }
+
+        function effectiveDay() {
+            return state.selectedDay >= 0 ? state.selectedDay : getDayIndex();
+        }
+
+        // ===== Update State =====
+        function updateState() {
+            state.now = new Date();
+            const day = state.now.getDay();
+            state.isSchoolDay = (day >= 1 && day <= 5);
+
+            const totalMin = state.now.getHours() * 60 + state.now.getMinutes();
+            state.currentPeriodIdx = -1;
+            state.nextPeriodIdx = -1;
+
+            for (let i = 0; i < timetableData.periods.length; i++) {
+                const p = timetableData.periods[i];
+                const start = parseTime(p.time.split('-')[0]);
+                const end = parseTime(p.time.split('-')[1]);
+                if (totalMin >= start && totalMin <= end) {
+                    state.currentPeriodIdx = i;
+                    break;
+                }
+                if (totalMin < start && state.nextPeriodIdx === -1) {
+                    state.nextPeriodIdx = i;
+                }
+            }
+        }
+
+        // ===== Build Table =====
+        function buildTable() {
+            const ed = effectiveDay();
+            const courseRow = timetableData.courses[ed];
+            const isToday = (state.selectedDay === -1 || state.selectedDay === getDayIndex()) && state.isSchoolDay;
+
+            // Thead
+            $thead.innerHTML = `<tr>
+                <th>鑺傛</th>
+                <th>鏃堕棿</th>
+                <th>${timetableData.days[ed]} 璇剧▼</th>
+            </tr>`;
+
+            // Tbody
+            let html = '';
+            for (let i = 0; i < timetableData.periods.length; i++) {
+                const p = timetableData.periods[i];
+                const course = courseRow[i];
+                let typeClass = 'type-' + p.type;
+                let extraClass = '';
+
+                if (isToday) {
+                    if (i === state.currentPeriodIdx) extraClass = ' current-period';
+                    else if (i === state.nextPeriodIdx) extraClass = ' next-period';
+                    else if (state.currentPeriodIdx !== -1 && i < state.currentPeriodIdx) extraClass = ' past-period';
+                }
+
+                // Search highlight
+                if (state.searchTerm && course.includes(state.searchTerm)) {
+                    extraClass += ' search-highlight';
+                }
+
+                html += `<tr>
+                    <td class="${typeClass}${extraClass}">${p.name}<span class="time-sub">${p.time}</span></td>
+                    <td class="${typeClass}${extraClass}">${p.time}</td>
+                    <td class="${typeClass}${extraClass}" data-period="${i}" data-day="${ed}">${course}</td>
+                </tr>`;
+            }
+            $tbody.innerHTML = html;
+
+            // Click handlers on course cells
+            $tbody.querySelectorAll('td[data-period]').forEach(td => {
+                td.addEventListener('click', () => {
+                    const pi = parseInt(td.dataset.period);
+                    const di = parseInt(td.dataset.day);
+                    showModal(di, pi);
+                });
+            });
+        }
+
+        // ===== Build Day Tabs =====
+        function buildDayTabs() {
+            const today = getDayIndex();
+            const ed = effectiveDay();
+            let html = '';
+            for (let i = 0; i < timetableData.days.length; i++) {
+                const isActive = i === ed;
+                const isTodayTab = (state.selectedDay === -1 && i === today && state.isSchoolDay);
+                html += `<button class="day-tab${isActive ? ' active' : ''}" data-day="${i}">
+                    ${timetableData.days[i]}
+                    <span class="day-label">${isTodayTab ? '(浠婂ぉ)' : ''}</span>
+                </button>`;
+            }
+            $dayTabs.innerHTML = html;
+
+            $dayTabs.querySelectorAll('.day-tab').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.selectedDay = parseInt(btn.dataset.day);
+                    refreshAll();
+                });
+            });
+        }
+
+        // ===== Modal =====
+        function showModal(dayIdx, periodIdx) {
+            const course = timetableData.courses[dayIdx][periodIdx];
+            const p = timetableData.periods[periodIdx];
+            const dayName = timetableData.days[dayIdx];
+
+            $modalCourse.textContent = course;
+            $modalTime.textContent = p.name + ' | ' + p.time;
+            $modalDay.textContent = dayName;
+
+            const ed = effectiveDay();
+            const isToday = (dayIdx === ed || (state.selectedDay === -1 && dayIdx === getDayIndex())) && state.isSchoolDay;
+            let statusText = '';
+            let statusBg = '';
+            if (isToday) {
+                if (periodIdx === state.currentPeriodIdx) {
+                    statusText = '姝ｅ湪杩涜涓?;
+                    statusBg = '#4ade80';
+                } else if (periodIdx === state.nextPeriodIdx) {
+                    statusText = '鍗冲皢寮€濮?;
+                    statusBg = '#fbbf24';
+                } else if (state.currentPeriodIdx !== -1 && periodIdx < state.currentPeriodIdx) {
+                    statusText = '宸茬粨鏉?;
+                    statusBg = '#94a3b8';
+                } else {
+                    statusText = '寰呬笂璇?;
+                    statusBg = 'var(--accent)';
+                }
+            } else {
+                statusText = '鏌ョ湅涓?;
+                statusBg = 'var(--accent)';
+            }
+            $modalStatus.textContent = statusText;
+            $modalStatus.style.background = statusBg;
+            $modalStatus.style.color = '#fff';
+
+            $modalOverlay.classList.add('show');
+        }
+
+        function closeModal() {
+            $modalOverlay.classList.remove('show');
+        }
+        $modalOverlay.addEventListener('click', (e) => {
+            if (e.target === $modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ===== Banner / Countdown =====
+        function updateBanner() {
+            const now = state.now;
+            const day = now.getDay();
+            const totalMin = now.getHours() * 60 + now.getMinutes();
+            const sec = now.getSeconds();
+
+            let text = '';
+            let dotClass = '';
+
+            if (day === 0 || day === 6) {
+                text = '浠婂ぉ鏄懆鏈紝娌℃湁璇剧▼瀹夋帓';
+                dotClass = 'weekend';
+            } else {
+                const ed = effectiveDay();
+                const courses = timetableData.courses[ed];
+
+                if (state.currentPeriodIdx !== -1) {
+                    const p = timetableData.periods[state.currentPeriodIdx];
+                    const endMin = parseTime(p.time.split('-')[1]);
+                    const left = endMin - totalMin;
+                    const mL = Math.max(0, Math.floor(left));
+                    const sL = 59 - sec;
+                    text = `姝ｅ湪涓婏細${courses[state.currentPeriodIdx]} | 涓嬭鍊掕鏃?${mL}鍒?{sL}绉抈;
+                    dotClass = 'active';
+                } else if (state.nextPeriodIdx !== -1) {
+                    const p = timetableData.periods[state.nextPeriodIdx];
+                    const startMin = parseTime(p.time.split('-')[0]);
+                    const toGo = startMin - totalMin;
+                    const mG = Math.max(0, Math.floor(toGo));
+                    const sG = 59 - sec;
+                    text = `璇鹃棿浼戞伅 | 璺濈銆?{courses[state.nextPeriodIdx]}銆嶈繕鏈?${mG}鍒?{sG}绉抈;
+                    dotClass = 'break';
+                } else if (totalMin < parseTime(timetableData.periods[0].time.split('-')[0])) {
+                    const startMin = parseTime(timetableData.periods[0].time.split('-')[0]);
+                    const toGo = startMin - totalMin;
+                    const mG = Math.max(0, Math.floor(toGo));
+                    const sG = 59 - sec;
+                    text = `璺濈涓€鑺傝杩樻湁 ${mG}鍒?{sG}绉抈;
+                    dotClass = 'break';
+                } else {
+                    text = '浠婃棩璇剧▼宸插叏閮ㄧ粨鏉?;
+                    dotClass = 'ended';
+                }
+            }
+
+            $bannerText.textContent = text;
+            $bannerDot.className = 'banner-dot ' + dotClass;
+        }
+
+        // ===== Notifications =====
+        function checkAndNotify() {
+            if (!state.notificationGranted || !state.isSchoolDay) return;
+            const totalMin = state.now.getHours() * 60 + state.now.getMinutes();
+            const ed = effectiveDay();
+            const courses = timetableData.courses[ed];
+
+            for (let i = 0; i < timetableData.periods.length; i++) {
+                const p = timetableData.periods[i];
+                const startMin = parseTime(p.time.split('-')[0]);
+                const diff = startMin - totalMin;
+                const key = `${ed}-${i}`;
+
+                // Notify 5 min before start
+                if (diff === 5 && !state.notifiedPeriods.has(key)) {
+                    state.notifiedPeriods.add(key);
+                    try {
+                        new Notification('璇剧▼鎻愰啋', {
+                            body: `5鍒嗛挓鍚庡紑濮嬶細${courses[i]} (${p.time})`,
+                            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">馃搮</text></svg>',
+                            tag: key
+                        });
+                    } catch(e) { /* ignore */ }
+                }
+            }
+        }
+
+        function requestNotification() {
+            if (!('Notification' in window)) {
+                $notifPrompt.classList.remove('show');
+                return;
+            }
+            Notification.requestPermission().then(perm => {
+                if (perm === 'granted') {
+                    state.notificationGranted = true;
+                }
+                $notifPrompt.classList.remove('show');
+            });
+        }
+
+        function dismissNotifPrompt() {
+            $notifPrompt.classList.remove('show');
+        }
+
+        // Show prompt after a short delay if not already decided
+        function maybeShowNotifPrompt() {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'default') {
+                setTimeout(() => $notifPrompt.classList.add('show'), 3000);
+            } else if (Notification.permission === 'granted') {
+                state.notificationGranted = true;
+            }
+        }
+
+        // ===== Search =====
+        function doSearch() {
+            state.searchTerm = $searchInput.value.trim();
+            if (state.searchTerm) {
+                $searchClear.style.display = 'block';
+                // Switch to the day tab containing the first match
+                let foundDay = -1;
+                for (let d = 0; d < 5; d++) {
+                    const row = timetableData.courses[d];
+                    if (row.some(c => c.includes(state.searchTerm))) {
+                        foundDay = d;
+                        break;
+                    }
+                }
+                if (foundDay >= 0) {
+                    state.selectedDay = foundDay;
+                }
+            } else {
+                $searchClear.style.display = 'none';
+                state.selectedDay = -1;
+            }
+            buildDayTabs();
+            buildTable();
+            updateBanner();
+        }
+
+        $searchInput.addEventListener('input', doSearch);
+        $searchClear.addEventListener('click', () => {
+            $searchInput.value = '';
+            doSearch();
+            $searchInput.focus();
+        });
+
+        // ===== Theme Toggle =====
+        function applyTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            if (current === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                $themeIcon.innerHTML = '&#x1F319;';
+                $themeLabel.textContent = '鏆楅粦';
+                localStorage.setItem('timetable-theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                $themeIcon.innerHTML = '&#x2600;';
+                $themeLabel.textContent = '鏄庝寒';
+                localStorage.setItem('timetable-theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('timetable-theme');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                $themeIcon.innerHTML = '&#x2600;';
+                $themeLabel.textContent = '鏄庝寒';
+            }
+        }
+
+        $themeToggle.addEventListener('click', applyTheme);
+
+        // ===== Print =====
+        document.getElementById('printBtn').addEventListener('click', () => {
+            window.print();
+        });
+
+        // ===== Refresh All =====
+        function refreshAll() {
+            updateState();
+            buildDayTabs();
+            buildTable();
+            updateBanner();
+        }
+
+        // ===== Init =====
+        function init() {
+            loadTheme();
+            updateState();
+            buildDayTabs();
+            buildTable();
+            updateBanner();
+            maybeShowNotifPrompt();
+
+            // Tick every second
+            setInterval(() => {
+                updateState();
+                buildTable();
+                updateBanner();
+                checkAndNotify();
+            }, 1000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
