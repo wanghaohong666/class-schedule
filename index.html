@@ -441,14 +441,15 @@ const timetableData = {
     { name:'第6节',     time:'15:35-16:15',duration:40, type:'afternoon' },
     { name:'第7节',     time:'16:30-17:10',duration:40, type:'afternoon' },
     { name:'第8节',     time:'17:25-18:05',duration:40, type:'afternoon' },
-    { name:'生地背书',  time:'18:50-19:30',duration:40, type:'memorize' }
+    { name:'第9节',     time:'18:20-19:00',duration:40, type:'afternoon' },
+    { name:'生地背书',  time:'19:00-19:30',duration:30, type:'memorize' }
   ],
   courses: [
-    ['升旗','专题教育','历史','音乐','体育','语文','数学','综合实践','地理','生地背书'],
-    ['英语早读','英语','道法','物理','生物','体育','美术','语文','数学','生地背书'],
-    ['生物早读','生物','语文','道法','地理','英语','体育','数学','语文','生地背书'],
-    ['语文早读','语文','英语','地理','信息科技','数学','数学','物理','生物','生地背书'],
-    ['跑操','数学','语文','生物','历史','劳动','心理健康','英语','地理','生地背书']
+    ['升旗','专题教育','历史','音乐','体育','语文','数学','综合实践','地理','地理','生地背书'],
+    ['英语早读','英语','道法','物理','生物','体育','美术','语文','数学','数学','生地背书'],
+    ['生物早读','生物','语文','道法','地理','英语','体育','数学','语文','语文','生地背书'],
+    ['语文早读','语文','英语','地理','信息科技','数学','数学','物理','生物','生物','生地背书'],
+    ['跑操','数学','语文','生物','历史','劳动','心理健康','英语','地理','地理','生地背书']
   ]
 };
 
@@ -741,7 +742,7 @@ function updateAll() {
 
   // Daily summary
   if (holiday) {
-    dailySummary.innerHTML = '<strong>' + holiday.name + '</strong>假期中。<br>开学后共 <strong>10</strong> 节课/天。<br>好好休息，劳逸结合！';
+    dailySummary.innerHTML = '<strong>' + holiday.name + '</strong>假期中。<br>开学后共 <strong>11</strong> 节课/天。<br>好好休息，劳逸结合！';
   } else if (isSchoolDay) {
     const todayCourses = timetableData.courses[dow - 1];
     const totalClasses = todayCourses.filter(c => c && c !== '').length;
