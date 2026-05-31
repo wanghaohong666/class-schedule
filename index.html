@@ -510,26 +510,44 @@ body.dark[data-theme="morandi"] {
   --btn-print-text: #0f172a;
 }
 
-/* ===== Exam Countdown Bar ===== */
-.exam-bar {
+/* ===== Countdown Bar ===== */
+.countdown-bar {
   position: sticky; top: 0; z-index: 950;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: #fff;
   padding: 10px 22px;
-  text-align: center;
-  font-size: 0.95rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 12px rgba(99,102,241,0.3);
   transition: background 0.4s ease;
+  flex-wrap: wrap;
 }
-.exam-bar.urgent {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  animation: exam-pulse 1.5s ease-in-out infinite;
+.countdown-item {
+  display: flex; align-items: center; gap: 5px;
+  transition: color 0.3s;
 }
-@keyframes exam-pulse {
-  0%,100% { box-shadow: 0 2px 12px rgba(239,68,68,0.4); }
-  50%     { box-shadow: 0 2px 24px rgba(239,68,68,0.7); }
+.countdown-days {
+  font-size: 1.15rem; font-weight: 700; min-width: 28px; text-align: center;
+}
+.countdown-divider {
+  width: 1px; height: 22px;
+  background: rgba(255,255,255,0.35);
+}
+.countdown-item.urgent {
+  color: #fecaca;
+  animation: countdown-pulse 1.5s ease-in-out infinite;
+}
+.countdown-item.warning {
+  color: #fed7aa;
+}
+@keyframes countdown-pulse {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.5; }
 }
 
 /* ===== Theme Picker ===== */
@@ -639,8 +657,20 @@ body.dark[data-theme="morandi"] {
 </style>
 </head>
 <body>
-<!-- Exam Countdown -->
-<div class="exam-bar" id="examBar">距期末考试还有 <span id="examDays">--</span> 天</div>
+<!-- Countdowns -->
+<div class="countdown-bar" id="countdownBar">
+  <div class="countdown-item" id="huiKaoItem">
+    <span class="countdown-label">距地理生物会考还有</span>
+    <span class="countdown-days" id="huiKaoDays">--</span>
+    <span class="countdown-suffix">天</span>
+  </div>
+  <div class="countdown-divider"></div>
+  <div class="countdown-item" id="zhongKaoItem">
+    <span class="countdown-label">距中考还有</span>
+    <span class="countdown-days" id="zhongKaoDays">--</span>
+    <span class="countdown-suffix">天</span>
+  </div>
+</div>
 
 
 <!-- Notification Banner -->
@@ -742,9 +772,9 @@ const timetableData = {
     { name:'生地背书',  time:'19:00-19:30',duration:30, type:'memorize' }
   ],
   courses: [
-    ['升旗','专题教育','历史','音乐','体育','语文','数学','英语','地理','地理','生地背书'],
+    ['升旗','专题教育','历史','音乐','体育','语文','数学','英语','英语','地理','生地背书'],
     ['英语早读','英语','道法','物理','生物','体育','美术','数学','数学','数学','生地背书'],
-    ['生物早读','生物','语文','道法','地理','英语','体育','物理','语文','语文','生地背书'],
+    ['生物早读','生物','语文','道法','地理','英语','体育','物理','物理','语文','生地背书'],
     ['语文早读','语文','英语','地理','信息科技','数学','数学','生物','生物','生物','生地背书'],
     ['跑操','数学','语文','生物','历史','劳动','心理健康','地理','地理','地理','生地背书']
   ]
@@ -797,24 +827,48 @@ function getFirstSchoolDayAfter(holidayEndStr) {
   return d;
 }
 
-// ===== EXAM =====
-const EXAM_DATE = new Date(2026, 6, 1); // 2026-07-01
+// ===== COUNTDOWNS =====
+const HUI_KAO_DATE = new Date(2026, 5, 30); // 2026-06-30 地理生物会考
+const ZHONG_KAO_DATE = new Date(2027, 5, 28); // 2027-06-28 中考
 
-function updateExamCountdown() {
+function updateCountdowns() {
   const now = new Date();
-  const diff = Math.ceil((EXAM_DATE - now) / 86400000);
-  const bar = document.getElementById('examBar');
-  const daysEl = document.getElementById('examDays');
-  if (diff > 0) {
-    daysEl.textContent = diff;
-    if (diff <= 7) { bar.classList.add('urgent'); }
-    else { bar.classList.remove('urgent'); }
-  } else if (diff === 0) {
-    bar.textContent = '今天期末考试，加油！';
-    bar.classList.add('urgent');
+  const huiDiff = Math.ceil((HUI_KAO_DATE - now) / 86400000);
+  const zhongDiff = Math.ceil((ZHONG_KAO_DATE - now) / 86400000);
+
+  const huiEl = document.getElementById('huiKaoDays');
+  const zhongEl = document.getElementById('zhongKaoDays');
+  const huiItem = document.getElementById('huiKaoItem');
+  const zhongItem = document.getElementById('zhongKaoItem');
+  const bar = document.getElementById('countdownBar');
+
+  // 会考倒计时
+  if (huiDiff > 0) {
+    huiEl.textContent = huiDiff;
+    if (huiDiff <= 7) { huiItem.classList.add('urgent'); bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; }
+    else { huiItem.classList.remove('urgent'); }
+  } else if (huiDiff === 0) {
+    huiItem.textContent = '今天会考！加油！';
+    huiItem.classList.add('urgent');
+    bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
   } else {
-    bar.textContent = '期末考试已结束';
-    bar.classList.remove('urgent');
+    huiItem.textContent = '会考已结束';
+    huiItem.classList.remove('urgent');
+  }
+
+  // 中考倒计时
+  if (zhongDiff > 0) {
+    zhongEl.textContent = zhongDiff;
+    if (zhongDiff <= 7) { zhongItem.classList.add('urgent'); zhongItem.classList.remove('warning'); bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; }
+    else if (zhongDiff <= 30) { zhongItem.classList.add('warning'); zhongItem.classList.remove('urgent'); }
+    else { zhongItem.classList.remove('urgent','warning'); }
+  } else if (zhongDiff === 0) {
+    zhongItem.textContent = '今天中考！加油！';
+    zhongItem.classList.add('urgent');
+    bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+  } else {
+    zhongItem.textContent = '中考已结束';
+    zhongItem.classList.remove('urgent','warning');
   }
 }
 
@@ -987,15 +1041,15 @@ function init() {
 
   buildDayTabs();
   buildTable();
-  updateExamCountdown();
+  updateCountdowns();
   updateAll();
   bindEvents();
 
   // refresh every second
   setInterval(updateAll, 1000);
 
-  // exam countdown every minute
-  setInterval(updateExamCountdown, 60000);
+  // countdowns every minute
+  setInterval(updateCountdowns, 60000);
 
   // check notification every 30s
   setInterval(checkNotifications, 30000);
