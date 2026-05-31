@@ -114,11 +114,15 @@ body {
 }
 .banner-text { font-size:1.05rem; font-weight:700; flex:1; }
 .banner-time { font-size:0.9rem; opacity:0.85; font-variant-numeric:tabular-nums; }
+/* banner variants */
+.banner.holiday { background:linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+.banner.weekend { background:linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); }
+.banner.preholiday { background:linear-gradient(135deg, #f97316 0%, #ef4444 100%); }
 
 /* ===== Main Layout ===== */
 .main-wrap {
-  max-width:1400px; margin:20px auto 30px;
-  display:flex; gap:28px; flex-wrap:wrap;
+  max-width:1400px; margin:6px auto 18px;
+  display:flex; gap:22px; flex-wrap:wrap;
 }
 .timetable-col { flex:3; min-width:320px; }
 .sidebar-col   { flex:1; min-width:260px; display:flex; flex-direction:column; gap:20px; }
@@ -127,8 +131,8 @@ body {
 .card {
   background:var(--card-bg);
   border:1px solid var(--card-border);
-  border-radius:20px;
-  padding:24px;
+  border-radius:18px;
+  padding:18px 22px;
   box-shadow:var(--card-shadow);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
@@ -137,7 +141,7 @@ body {
 
 /* ===== Toolbar ===== */
 .toolbar {
-  display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:16px;
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;
 }
 .search-box {
   flex:1; min-width:160px;
@@ -181,7 +185,7 @@ body {
 
 /* ===== Day Tabs ===== */
 .day-tabs {
-  display:flex; gap:4px; margin-bottom:18px; flex-wrap:wrap;
+  display:flex; gap:4px; margin-bottom:10px; flex-wrap:wrap;
   background:var(--tab-bg);
   border-radius:14px; padding:5px;
   backdrop-filter:blur(10px);
@@ -459,6 +463,43 @@ const dailyQuotes = [
   { text:'锲而不舍，金石可镂。', author:'荀子' }
 ];
 
+// ===== HOLIDAYS (2026 China) =====
+const holidays = [
+  { name:'寒假',        start:'2026-01-18', end:'2026-02-12', totalDays:26 },
+  { name:'端午节',      start:'2026-06-19', end:'2026-06-21', totalDays:3  },
+  { name:'暑假',        start:'2026-07-05', end:'2026-08-31', totalDays:58 },
+  { name:'国庆中秋',    start:'2026-10-01', end:'2026-10-08', totalDays:8  }
+];
+
+function dateStr(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function parseDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+
+function getHoliday(todayStr) {
+  for (const h of holidays) {
+    if (todayStr >= h.start && todayStr <= h.end) return h;
+  }
+  return null;
+}
+
+function getNextHoliday(todayStr) {
+  for (const h of holidays) {
+    if (h.start > todayStr) {
+      // check if tomorrow is the start
+      const tomorrow = new Date(parseDate(todayStr));
+      tomorrow.setDate(tomorrow.getDate()+1);
+      if (dateStr(tomorrow) === h.start) return h;
+    }
+  }
+  return null;
+}
+
+function getFirstSchoolDayAfter(holidayEndStr) {
+  let d = parseDate(holidayEndStr);
+  d.setDate(d.getDate()+1);
+  while (d.getDay()===0 || d.getDay()===6) d.setDate(d.getDate()+1);
+  return d;
+}
+
 // ===== STATE =====
 let state = {
   activeDay: 0,        // 0-4 周一至周五
@@ -608,60 +649,114 @@ function updateAll() {
   state.currentPeriodIdx = cp;
   state.nextPeriodIdx = np;
 
-  // Banner
-  let bannerMsg = '', bannerColor = '', dotClass = 'idle';
+  // Banner + Holiday / Weekend logic
+  const todayStr = dateStr(now);
+  const holiday = getHoliday(todayStr);
+  const nextHoliday = getNextHoliday(todayStr);
+  const isSchoolDay = (dow >= 1 && dow <= 5);
+  let bannerMsg = '', dotClass = 'idle';
   const timeStr = hours.toString().padStart(2,'0') + ':' + minutes.toString().padStart(2,'0') + ':' + seconds.toString().padStart(2,'0');
   bannerTime.textContent = timeStr;
 
-  const isSchoolDay = (dow >= 1 && dow <= 5);
-  if (!isSchoolDay) {
-    bannerMsg = '今天是周末，没有课程安排';
+  // Clear banner classes
+  banner.classList.remove('holiday','weekend','preholiday');
+
+  if (holiday) {
+    // ---- INSIDE HOLIDAY ----
+    const endD = parseDate(holiday.end);
+    const daysLeft = Math.ceil((endD - now) / 86400000);
+    const firstDay = getFirstSchoolDayAfter(holiday.end);
+    const fdDow = firstDay.getDay(); // 1-5
+    const fdCourses = timetableData.courses[fdDow-1];
+    const preview = fdCourses.slice(0,4).join('、');
+    if (daysLeft <= 0) {
+      bannerMsg = holiday.name + '最后一天！明天开学：' + preview;
+    } else {
+      bannerMsg = holiday.name + '假期中，还剩 ' + daysLeft + ' 天 | 开学第一天课程预览：' + preview;
+    }
     dotClass = 'idle';
-  } else if (cp !== -1) {
-    const p = timetableData.periods[cp];
-    const [eh, em] = p.time.split('-')[1].split(':').map(Number);
-    const et = eh * 60 + em;
-    const left = et - totalMinutes;
-    const leftMin = Math.floor(left);
-    const leftSec = 59 - seconds;
-    const courseName = timetableData.courses[dow - 1][cp];
-    bannerMsg = '正在上课：' + courseName + ' | 下课还有 ' + leftMin + '分' + leftSec + '秒';
-    dotClass = 'active';
-  } else if (np !== -1) {
-    const p = timetableData.periods[np];
-    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
-    const st = sh * 60 + sm;
-    const left = st - totalMinutes;
-    const leftMin = Math.floor(left);
-    const leftSec = 59 - seconds;
-    const courseName = timetableData.courses[dow - 1][np];
-    bannerMsg = '课间休息 | 下节 ' + courseName + ' 还有 ' + leftMin + '分' + leftSec + '秒';
-    dotClass = 'break';
-  } else if (totalMinutes < 450) {
-    const p = timetableData.periods[0];
-    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
-    const st = sh * 60 + sm;
-    const left = st - totalMinutes;
-    const leftMin = Math.floor(left);
-    const leftSec = 59 - seconds;
-    bannerMsg = '距离第一节课还有 ' + leftMin + '分' + leftSec + '秒';
-    dotClass = 'idle';
-  } else {
-    bannerMsg = '今日课程已全部结束';
-    dotClass = 'idle';
+    banner.classList.add('holiday');
+  } else if (nextHoliday && isSchoolDay && cp === -1 && np === -1) {
+    // ---- PRE-HOLIDAY (all periods done, tomorrow is holiday) ----
+    const lastPeriod = timetableData.periods[timetableData.periods.length-1];
+    const [leh, lem] = lastPeriod.time.split('-')[1].split(':').map(Number);
+    if (totalMinutes >= leh*60+lem) {
+      bannerMsg = '即将放假！' + nextHoliday.name + '假期共 ' + nextHoliday.totalDays + ' 天';
+      dotClass = 'idle';
+      banner.classList.add('preholiday');
+    }
   }
+
+  // Fallback to normal logic if bannerMsg not set
+  if (!bannerMsg) {
+    if (!isSchoolDay) {
+      // ---- WEEKEND (Sat/Sun) ----
+      const monCourses = timetableData.courses[0];
+      const preview = monCourses.slice(0,4).join('、');
+      if (dow === 0) {
+        bannerMsg = '周日 | 明天周一课程预览：' + preview;
+      } else {
+        // Saturday
+        const daysToMon = 2; // Saturday -> 2 days to Monday
+        bannerMsg = '周六 | 还剩 ' + daysToMon + ' 天到周一，课程预览：' + preview;
+      }
+      dotClass = 'idle';
+      banner.classList.add('weekend');
+    } else if (cp !== -1) {
+      const p = timetableData.periods[cp];
+      const [eh, em] = p.time.split('-')[1].split(':').map(Number);
+      const et = eh * 60 + em;
+      const left = et - totalMinutes;
+      const leftMin = Math.floor(left);
+      const leftSec = 59 - seconds;
+      const courseName = timetableData.courses[dow - 1][cp];
+      bannerMsg = '正在上课：' + courseName + ' | 下课还有 ' + leftMin + '分' + leftSec + '秒';
+      dotClass = 'active';
+    } else if (np !== -1) {
+      const p = timetableData.periods[np];
+      const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+      const st = sh * 60 + sm;
+      const left = st - totalMinutes;
+      const leftMin = Math.floor(left);
+      const leftSec = 59 - seconds;
+      const courseName = timetableData.courses[dow - 1][np];
+      bannerMsg = '课间休息 | 下节 ' + courseName + ' 还有 ' + leftMin + '分' + leftSec + '秒';
+      dotClass = 'break';
+    } else if (totalMinutes < 450) {
+      const p = timetableData.periods[0];
+      const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+      const st = sh * 60 + sm;
+      const left = st - totalMinutes;
+      const leftMin = Math.floor(left);
+      const leftSec = 59 - seconds;
+      bannerMsg = '距离第一节课还有 ' + leftMin + '分' + leftSec + '秒';
+      dotClass = 'idle';
+    } else {
+      bannerMsg = '今日课程已全部结束';
+      dotClass = 'idle';
+    }
+  }
+
   bannerText.textContent = bannerMsg;
   bannerDot.className = 'banner-dot ' + dotClass;
 
   // Daily summary
-  if (isSchoolDay) {
+  if (holiday) {
+    dailySummary.innerHTML = '<strong>' + holiday.name + '</strong>假期中。<br>开学后共 <strong>11</strong> 节课/天。<br>好好休息，劳逸结合！';
+  } else if (isSchoolDay) {
     const todayCourses = timetableData.courses[dow - 1];
     const totalClasses = todayCourses.filter(c => c && c !== '').length;
     let greeting = hours < 12 ? '上午好！' : hours < 18 ? '下午好！' : '晚上好！';
     let cpName = cp !== -1 ? timetableData.periods[cp].name : '休息时间';
-    dailySummary.innerHTML = greeting + '<br>今日共 <strong>' + totalClasses + '</strong> 节课。<br>当前是 ' + cpName + '。';
+    if (nextHoliday && cp===-1 && np===-1) {
+      dailySummary.innerHTML = greeting + '<br>今日共 <strong>' + totalClasses + '</strong> 节课。<br>🎉 明天开始<strong>' + nextHoliday.name + '</strong>假期！';
+    } else {
+      dailySummary.innerHTML = greeting + '<br>今日共 <strong>' + totalClasses + '</strong> 节课。<br>当前是 ' + cpName + '。';
+    }
   } else {
-    dailySummary.innerHTML = '今天是周末，没有课程安排。<br>可以好好休息，也可以适当复习功课。<br>劳逸结合，效率更高！';
+    const monCourses = timetableData.courses[0];
+    const preview = monCourses.slice(0,4).join('、');
+    dailySummary.innerHTML = '周末愉快！<br>周一课程预览：<strong>' + preview + '</strong><br>劳逸结合，效率更高！';
   }
 
   // Highlight cells
