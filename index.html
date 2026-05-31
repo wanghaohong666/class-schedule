@@ -403,7 +403,7 @@ body {
       <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid var(--border-light);margin-bottom:16px;">图例说明</h3>
       <div class="legend-grid">
         <div class="legend-item"><span class="legend-swatch swatch-morning"></span>上午课程(45分钟)</div>
-        <div class="legend-item"><span class="legend-swatch swatch-afternoon"></span>下午课程(45分钟)</div>
+        <div class="legend-item"><span class="legend-swatch swatch-afternoon"></span>下午课程(40分钟)</div>
         <div class="legend-item"><span class="legend-swatch swatch-memorize"></span>生地背书(课后)</div>
         <div class="legend-item"><span class="legend-swatch swatch-break"></span>早读/晨练</div>
       </div>
@@ -437,16 +437,16 @@ const timetableData = {
     { name:'第2节',     time:'9:00-9:45',  duration:45, type:'morning' },
     { name:'第3节',     time:'10:15-11:00',duration:45, type:'morning' },
     { name:'第4节',     time:'11:15-12:00',duration:45, type:'morning' },
-    { name:'第5节',     time:'14:40-15:25',duration:45, type:'afternoon' },
-    { name:'第6节',     time:'15:40-16:25',duration:45, type:'afternoon' },
-    { name:'第7节',     time:'16:40-17:25',duration:45, type:'afternoon' },
-    { name:'第8节',     time:'17:45-18:30',duration:45, type:'afternoon' },
+    { name:'第5节',     time:'14:40-15:20',duration:40, type:'afternoon' },
+    { name:'第6节',     time:'15:35-16:15',duration:40, type:'afternoon' },
+    { name:'第7节',     time:'16:30-17:10',duration:40, type:'afternoon' },
+    { name:'第8节',     time:'17:25-18:05',duration:40, type:'afternoon' },
     { name:'生地背书',  time:'18:50-19:30',duration:40, type:'memorize' }
   ],
   courses: [
-    ['升旗','专题教育','历史','音乐','体育','语文','数学','综合实践','英语','生地背书'],
+    ['升旗','专题教育','历史','音乐','体育','语文','数学','综合实践','地理','生地背书'],
     ['英语早读','英语','道法','物理','生物','体育','美术','语文','数学','生地背书'],
-    ['生物早读','生物','语文','道法','地理','英语','体育','数学','物理','生地背书'],
+    ['生物早读','生物','语文','道法','地理','英语','体育','数学','语文','生地背书'],
     ['语文早读','语文','英语','地理','信息科技','数学','数学','物理','生物','生地背书'],
     ['跑操','数学','语文','生物','历史','劳动','心理健康','英语','地理','生地背书']
   ]
