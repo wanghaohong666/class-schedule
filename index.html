@@ -305,6 +305,293 @@ body {
 }
 .modal-close:hover { transform:scale(1.05); box-shadow:0 6px 20px var(--accent-glow); }
 
+
+/* ===== Multi-Theme: Mint Green ===== */
+[data-theme="mint"] {
+  --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 40%, #ecfdf5 100%);
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(16,185,129,0.35);
+  --card-shadow: 0 8px 32px rgba(16,185,129,0.12);
+  --text-primary: #064e3b;
+  --text-secondary: #059669;
+  --text-muted: #6b8a7e;
+  --accent: #10b981;
+  --accent-light: #6ee7b7;
+  --accent-glow: rgba(16,185,129,0.35);
+  --banner-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --banner-text: #ffffff;
+  --table-header-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --table-header-text: #ffffff;
+  --cell-morning: rgba(209,250,229,0.65);
+  --cell-afternoon: rgba(253,230,138,0.45);
+  --cell-memorize: rgba(167,243,208,0.50);
+  --cell-break: rgba(233,255,237,0.50);
+  --cell-hover: rgba(16,185,129,0.15);
+  --cell-current: rgba(16,185,129,0.25);
+  --cell-search-hit: rgba(250,204,21,0.40);
+  --border-light: rgba(16,185,129,0.18);
+  --tab-bg: rgba(255,255,255,0.50);
+  --tab-active-bg: #10b981;
+  --tab-active-text: #ffffff;
+  --tab-text: #059669;
+  --modal-overlay: rgba(0,0,0,0.45);
+  --modal-bg: rgba(255,255,255,0.94);
+  --input-bg: rgba(255,255,255,0.65);
+  --input-border: rgba(16,185,129,0.30);
+  --btn-print-bg: #10b981;
+  --btn-print-text: #ffffff;
+}
+body.dark[data-theme="mint"] {
+  --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #021f18 100%);
+  --card-bg: rgba(6,78,59,0.78);
+  --card-border: rgba(16,185,129,0.22);
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.40);
+  --text-primary: #d1fae5;
+  --text-secondary: #6ee7b7;
+  --text-muted: #6b8a7e;
+  --accent: #34d399;
+  --accent-light: #10b981;
+  --accent-glow: rgba(52,211,153,0.45);
+  --banner-bg: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+  --banner-text: #d1fae5;
+  --table-header-bg: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  --table-header-text: #d1fae5;
+  --cell-morning: rgba(6,78,59,0.35);
+  --cell-afternoon: rgba(71,52,28,0.30);
+  --cell-memorize: rgba(6,78,59,0.32);
+  --cell-break: rgba(6,48,30,0.28);
+  --cell-hover: rgba(52,211,153,0.18);
+  --cell-current: rgba(52,211,153,0.30);
+  --border-light: rgba(52,211,153,0.22);
+  --tab-bg: rgba(6,78,59,0.55);
+  --tab-active-bg: #34d399;
+  --tab-active-text: #022c22;
+  --tab-text: #6ee7b7;
+  --modal-bg: rgba(6,78,59,0.94);
+  --input-bg: rgba(6,78,59,0.60);
+  --input-border: rgba(52,211,153,0.35);
+  --btn-print-bg: #34d399;
+  --btn-print-text: #022c22;
+}
+
+/* ===== Multi-Theme: Warm Orange ===== */
+[data-theme="warm"] {
+  --bg-gradient: linear-gradient(135deg, #fff7ed 0%, #ffedd5 40%, #fef3c7 100%);
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(249,115,22,0.30);
+  --card-shadow: 0 8px 32px rgba(249,115,22,0.10);
+  --text-primary: #431407;
+  --text-secondary: #ea580c;
+  --text-muted: #9a7b6b;
+  --accent: #f97316;
+  --accent-light: #fdba74;
+  --accent-glow: rgba(249,115,22,0.35);
+  --banner-bg: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  --banner-text: #ffffff;
+  --table-header-bg: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  --table-header-text: #ffffff;
+  --cell-morning: rgba(255,237,213,0.65);
+  --cell-afternoon: rgba(254,243,199,0.50);
+  --cell-memorize: rgba(209,250,229,0.45);
+  --cell-break: rgba(255,228,210,0.50);
+  --cell-hover: rgba(249,115,22,0.15);
+  --cell-current: rgba(249,115,22,0.25);
+  --cell-search-hit: rgba(250,204,21,0.40);
+  --border-light: rgba(249,115,22,0.18);
+  --tab-bg: rgba(255,255,255,0.50);
+  --tab-active-bg: #f97316;
+  --tab-active-text: #ffffff;
+  --tab-text: #ea580c;
+  --modal-overlay: rgba(0,0,0,0.45);
+  --modal-bg: rgba(255,255,255,0.94);
+  --input-bg: rgba(255,255,255,0.65);
+  --input-border: rgba(249,115,22,0.30);
+  --btn-print-bg: #f97316;
+  --btn-print-text: #ffffff;
+}
+body.dark[data-theme="warm"] {
+  --bg-gradient: linear-gradient(135deg, #2d1406 0%, #431407 40%, #1c0a02 100%);
+  --card-bg: rgba(67,20,7,0.78);
+  --card-border: rgba(249,115,22,0.22);
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  --text-primary: #ffedd5;
+  --text-secondary: #fdba74;
+  --text-muted: #9a7b6b;
+  --accent: #fb923c;
+  --accent-light: #f97316;
+  --accent-glow: rgba(251,146,60,0.45);
+  --banner-bg: linear-gradient(135deg, #7c2d12 0%, #431407 100%);
+  --banner-text: #ffedd5;
+  --table-header-bg: linear-gradient(135deg, #9a3412 0%, #7c2d12 100%);
+  --table-header-text: #ffedd5;
+  --cell-morning: rgba(67,20,7,0.35);
+  --cell-afternoon: rgba(71,52,28,0.35);
+  --cell-memorize: rgba(6,78,59,0.28);
+  --cell-break: rgba(58,25,8,0.28);
+  --cell-hover: rgba(251,146,60,0.18);
+  --cell-current: rgba(251,146,60,0.30);
+  --border-light: rgba(251,146,60,0.22);
+  --tab-bg: rgba(67,20,7,0.55);
+  --tab-active-bg: #fb923c;
+  --tab-active-text: #2d1406;
+  --tab-text: #fdba74;
+  --modal-bg: rgba(67,20,7,0.94);
+  --input-bg: rgba(67,20,7,0.60);
+  --input-border: rgba(251,146,60,0.35);
+  --btn-print-bg: #fb923c;
+  --btn-print-text: #2d1406;
+}
+
+/* ===== Multi-Theme: Morandi Gray ===== */
+[data-theme="morandi"] {
+  --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 40%, #f8fafc 100%);
+  --card-bg: rgba(255,255,255,0.78);
+  --card-border: rgba(148,163,184,0.35);
+  --card-shadow: 0 8px 32px rgba(100,116,139,0.10);
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --accent: #64748b;
+  --accent-light: #94a3b8;
+  --accent-glow: rgba(100,116,139,0.30);
+  --banner-bg: linear-gradient(135deg, #475569 0%, #334155 100%);
+  --banner-text: #f1f5f9;
+  --table-header-bg: linear-gradient(135deg, #475569 0%, #334155 100%);
+  --table-header-text: #f1f5f9;
+  --cell-morning: rgba(226,232,240,0.65);
+  --cell-afternoon: rgba(241,245,249,0.50);
+  --cell-memorize: rgba(203,213,225,0.45);
+  --cell-break: rgba(226,232,240,0.50);
+  --cell-hover: rgba(100,116,139,0.15);
+  --cell-current: rgba(100,116,139,0.25);
+  --cell-search-hit: rgba(250,204,21,0.35);
+  --border-light: rgba(148,163,184,0.20);
+  --tab-bg: rgba(255,255,255,0.50);
+  --tab-active-bg: #64748b;
+  --tab-active-text: #ffffff;
+  --tab-text: #475569;
+  --modal-overlay: rgba(0,0,0,0.40);
+  --modal-bg: rgba(255,255,255,0.94);
+  --input-bg: rgba(255,255,255,0.65);
+  --input-border: rgba(148,163,184,0.30);
+  --btn-print-bg: #64748b;
+  --btn-print-text: #ffffff;
+}
+body.dark[data-theme="morandi"] {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0a0f1a 100%);
+  --card-bg: rgba(30,41,59,0.78);
+  --card-border: rgba(148,163,184,0.20);
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.40);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #94a3b8;
+  --accent-light: #64748b;
+  --accent-glow: rgba(148,163,184,0.40);
+  --banner-bg: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  --banner-text: #e2e8f0;
+  --table-header-bg: linear-gradient(135deg, #475569 0%, #334155 100%);
+  --table-header-text: #e2e8f0;
+  --cell-morning: rgba(30,41,59,0.35);
+  --cell-afternoon: rgba(51,41,33,0.30);
+  --cell-memorize: rgba(30,41,59,0.28);
+  --cell-break: rgba(30,35,50,0.28);
+  --cell-hover: rgba(148,163,184,0.18);
+  --cell-current: rgba(148,163,184,0.30);
+  --border-light: rgba(148,163,184,0.22);
+  --tab-bg: rgba(30,41,59,0.55);
+  --tab-active-bg: #94a3b8;
+  --tab-active-text: #0f172a;
+  --tab-text: #94a3b8;
+  --modal-bg: rgba(30,41,59,0.94);
+  --input-bg: rgba(30,41,59,0.60);
+  --input-border: rgba(148,163,184,0.35);
+  --btn-print-bg: #94a3b8;
+  --btn-print-text: #0f172a;
+}
+
+/* ===== Exam Countdown Bar ===== */
+.exam-bar {
+  position: sticky; top: 0; z-index: 950;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #fff;
+  padding: 10px 22px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 12px rgba(99,102,241,0.3);
+  transition: background 0.4s ease;
+}
+.exam-bar.urgent {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  animation: exam-pulse 1.5s ease-in-out infinite;
+}
+@keyframes exam-pulse {
+  0%,100% { box-shadow: 0 2px 12px rgba(239,68,68,0.4); }
+  50%     { box-shadow: 0 2px 24px rgba(239,68,68,0.7); }
+}
+
+/* ===== Theme Picker ===== */
+.theme-picker {
+  display: flex; gap: 8px; align-items: center;
+  padding: 4px 8px;
+  background: var(--tab-bg);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.theme-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.theme-dot:hover { transform: scale(1.2); }
+.theme-dot.active { border-color: var(--text-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
+.theme-dot.indigo { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.theme-dot.mint   { background: linear-gradient(135deg, #10b981, #34d399); }
+.theme-dot.warm   { background: linear-gradient(135deg, #f97316, #fb923c); }
+.theme-dot.morandi{ background: linear-gradient(135deg, #64748b, #94a3b8); }
+
+/* ===== Export Button ===== */
+.btn-export {
+  background: var(--tab-bg); color: var(--tab-text);
+  border: 1.5px solid var(--border-light);
+}
+.btn-export:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== Row Highlight (left indicator bar) ===== */
+.timetable tbody tr.row-current {
+  position: relative;
+  background: var(--cell-current);
+}
+.timetable tbody tr.row-current::before {
+  content: '';
+  position: absolute; left: 0; top: 2px; bottom: 2px;
+  width: 4px; background: var(--accent);
+  border-radius: 0 4px 4px 0;
+}
+.timetable tbody tr td.cell-current-td {
+  background: transparent !important;
+  font-weight: 800 !important;
+}
+
+/* ===== Sticky first column (responsive) ===== */
+@media (max-width: 768px) {
+  .timetable thead th:first-child,
+  .timetable tbody td:first-child {
+    position: sticky; left: 0; z-index: 3;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  }
+  .timetable thead th:first-child {
+    background: var(--table-header-bg);
+    z-index: 5;
+  }
+}
 /* ===== Print ===== */
 @media print {
   body { background:#fff !important; padding:0; }
@@ -352,6 +639,9 @@ body {
 </style>
 </head>
 <body>
+<!-- Exam Countdown -->
+<div class="exam-bar" id="examBar">距期末考试还有 <span id="examDays">--</span> 天</div>
+
 
 <!-- Notification Banner -->
 <div class="banner" id="banner">
@@ -369,12 +659,19 @@ body {
       <!-- Toolbar -->
       <div class="toolbar">
         <input type="text" class="search-box" id="searchInput" placeholder="搜索课程...">
+        <div class="theme-picker" id="themePicker" title="切换配色主题">
+          <span class="theme-dot indigo active" data-theme="default"></span>
+          <span class="theme-dot mint" data-theme="mint"></span>
+          <span class="theme-dot warm" data-theme="warm"></span>
+          <span class="theme-dot morandi" data-theme="morandi"></span>
+        </div>
         <button class="btn btn-theme" id="btnTheme" title="切换暗黑/明亮模式">
           <span id="btnThemeIcon">🌙</span> <span id="btnThemeLabel">暗黑</span>
         </button>
         <button class="btn btn-notify" id="btnNotify" title="开启桌面通知">
           🔔 <span id="btnNotifyLabel">通知</span>
         </button>
+        <button class="btn btn-export" id="btnExport" title="导出为图片">📷 导出</button>
         <button class="btn btn-print" id="btnPrint" title="一键打印课程表">🖨️ 打印</button>
       </div>
 
@@ -445,9 +742,9 @@ const timetableData = {
     { name:'生地背书',  time:'19:00-19:30',duration:30, type:'memorize' }
   ],
   courses: [
-    ['升旗','专题教育','历史','音乐','体育','语文','数学','英语','英语','地理','生地背书'],
+    ['升旗','专题教育','历史','音乐','体育','语文','数学','英语','地理','地理','生地背书'],
     ['英语早读','英语','道法','物理','生物','体育','美术','数学','数学','数学','生地背书'],
-    ['生物早读','生物','语文','道法','地理','英语','体育','物理','物理','语文','生地背书'],
+    ['生物早读','生物','语文','道法','地理','英语','体育','物理','语文','语文','生地背书'],
     ['语文早读','语文','英语','地理','信息科技','数学','数学','生物','生物','生物','生地背书'],
     ['跑操','数学','语文','生物','历史','劳动','心理健康','地理','地理','地理','生地背书']
   ]
@@ -500,6 +797,146 @@ function getFirstSchoolDayAfter(holidayEndStr) {
   return d;
 }
 
+// ===== EXAM =====
+const EXAM_DATE = new Date(2026, 6, 1); // 2026-07-01
+
+function updateExamCountdown() {
+  const now = new Date();
+  const diff = Math.ceil((EXAM_DATE - now) / 86400000);
+  const bar = document.getElementById('examBar');
+  const daysEl = document.getElementById('examDays');
+  if (diff > 0) {
+    daysEl.textContent = diff;
+    if (diff <= 7) { bar.classList.add('urgent'); }
+    else { bar.classList.remove('urgent'); }
+  } else if (diff === 0) {
+    bar.textContent = '今天期末考试，加油！';
+    bar.classList.add('urgent');
+  } else {
+    bar.textContent = '期末考试已结束';
+    bar.classList.remove('urgent');
+  }
+}
+
+// ===== THEME MANAGER =====
+const THEME_KEY = 'class-schedule-theme';
+const themes = ['default', 'mint', 'warm', 'morandi'];
+
+function setTheme(name) {
+  document.documentElement.removeAttribute('data-theme');
+  if (name && name !== 'default') {
+    document.documentElement.setAttribute('data-theme', name);
+  }
+  localStorage.setItem(THEME_KEY, name);
+  // Update dots
+  document.querySelectorAll('.theme-dot').forEach(d => {
+    d.classList.toggle('active', d.dataset.theme === name);
+  });
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || 'default';
+  setTheme(saved);
+  // Bind clicks
+  document.querySelectorAll('.theme-dot').forEach(d => {
+    d.addEventListener('click', () => setTheme(d.dataset.theme));
+  });
+}
+
+// ===== EXPORT TO IMAGE =====
+function exportToImage() {
+  const card = document.querySelector('.timetable-col .card');
+  const rect = card.getBoundingClientRect();
+  const scale = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = rect.width * scale;
+  canvas.height = rect.height * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+
+  // Draw background
+  const style = getComputedStyle(document.body);
+  ctx.fillStyle = 'transparent';
+  ctx.fillRect(0, 0, rect.width, rect.height);
+
+  // Manually render the table
+  const table = document.getElementById('timetableTable');
+  const tableRect = table.getBoundingClientRect();
+  const offsetX = tableRect.left - rect.left;
+  const offsetY = tableRect.top - rect.top;
+
+  // Draw card background
+  const cardStyle = getComputedStyle(card);
+  ctx.fillStyle = cardStyle.backgroundColor || '#ffffff';
+  roundRect(ctx, 0, 0, rect.width, rect.height, 18);
+  ctx.fill();
+
+  // Draw table
+  drawTable(ctx, table, offsetX, offsetY);
+
+  // Download
+  const link = document.createElement('a');
+  link.download = '初二1班课程表_' + new Date().toISOString().slice(0,10) + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function drawTable(ctx, table, ox, oy) {
+  const rows = table.querySelectorAll('tr');
+  const style = getComputedStyle(document.documentElement);
+  const headerBg = '#6366f1';
+  const textColor = '#1e1b4b';
+  const mutedColor = '#7c7aaa';
+  const fontFamily = '"Microsoft YaHei","PingFang SC",sans-serif';
+
+  rows.forEach((row, ri) => {
+    const cells = row.querySelectorAll('th, td');
+    cells.forEach((cell, ci) => {
+      const cr = cell.getBoundingClientRect();
+      const x = cr.left - table.getBoundingClientRect().left + ox;
+      const y = cr.top - table.getBoundingClientRect().top + oy;
+      const w = cr.width;
+      const h = cr.height;
+
+      // Cell background
+      if (ri === 0) {
+        ctx.fillStyle = headerBg;
+      } else if (ci === 0) {
+        ctx.fillStyle = 'rgba(248,250,252,0.9)';
+      } else {
+        ctx.fillStyle = '#ffffff';
+      }
+      ctx.fillRect(x, y, w, h);
+
+      // Text
+      ctx.fillStyle = ri === 0 ? '#ffffff' : (ci === 0 ? mutedColor : textColor);
+      ctx.font = (ri === 0 ? 'bold ' : '') + '14px ' + fontFamily;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(cell.textContent.trim(), x + w / 2, y + h / 2);
+
+      // Border
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(x, y, w, h);
+    });
+  });
+}
+
 // ===== STATE =====
 let state = {
   activeDay: 0,        // 0-4 周一至周五
@@ -534,6 +971,11 @@ const modalDay = $('modalDay');
 
 // ===== INIT =====
 function init() {
+  // Dark mode persistence
+  initDarkMode();
+  // Themes
+  initTheme();
+
   // set today
   const now = new Date();
   const dow = now.getDay(); // 0=Sun, 6=Sat
@@ -545,11 +987,15 @@ function init() {
 
   buildDayTabs();
   buildTable();
+  updateExamCountdown();
   updateAll();
   bindEvents();
 
   // refresh every second
   setInterval(updateAll, 1000);
+
+  // exam countdown every minute
+  setInterval(updateExamCountdown, 60000);
 
   // check notification every 30s
   setInterval(checkNotifications, 30000);
@@ -598,6 +1044,7 @@ function buildTable() {
   for (let r = 0; r < timetableData.periods.length; r++) {
     const period = timetableData.periods[r];
     const tr = document.createElement('tr');
+    tr.dataset.row = r;
     // time column
     const tdTime = document.createElement('td');
     tdTime.innerHTML = '<span class="period-name">' + period.name + '</span><br>' + period.time;
@@ -766,15 +1213,22 @@ function updateAll() {
 // ===== HIGHLIGHT CELLS =====
 function highlightCells(todayIdx, cpIdx) {
   const allTds = tableBody.querySelectorAll('td.cell-course');
-  allTds.forEach(td => {
-    td.classList.remove('cell-current', 'cell-hit');
-  });
+  const allRows = tableBody.querySelectorAll('tr');
 
-  // Current period highlight (only on today's column)
+  // Clear all
+  allTds.forEach(td => td.classList.remove('cell-current', 'cell-current-td', 'cell-hit'));
+  allRows.forEach(tr => tr.classList.remove('row-current'));
+
+  // Row-level highlight: highlight the entire row of the current period
   if (cpIdx !== -1 && todayIdx !== -1 && todayIdx === state.activeDay) {
+    allRows.forEach(tr => {
+      if (parseInt(tr.dataset.row) === cpIdx) {
+        tr.classList.add('row-current');
+      }
+    });
     allTds.forEach(td => {
       if (parseInt(td.dataset.day) === todayIdx && parseInt(td.dataset.period) === cpIdx) {
-        td.classList.add('cell-current');
+        td.classList.add('cell-current-td');
       }
     });
   }
@@ -868,7 +1322,7 @@ function checkNotifications() {
   });
 }
 
-// ===== THEME =====
+// ===== THEME (Dark/Light) =====
 function toggleTheme() {
   state.darkMode = !state.darkMode;
   document.body.classList.toggle('dark', state.darkMode);
@@ -881,15 +1335,26 @@ function toggleTheme() {
     icon.textContent = '🌙';
     label.textContent = '暗黑';
   }
+  localStorage.setItem('class-schedule-dark', state.darkMode);
+}
+function initDarkMode() {
+  const saved = localStorage.getItem('class-schedule-dark') === 'true';
+  if (saved) { state.darkMode = true; document.body.classList.add('dark'); }
+  const icon = $('btnThemeIcon');
+  const label = $('btnThemeLabel');
+  if (state.darkMode) { icon.textContent = '☀️'; label.textContent = '明亮'; }
 }
 
 // ===== EVENTS =====
 function bindEvents() {
-  // Theme
+  // Theme (dark/light)
   $('btnTheme').addEventListener('click', toggleTheme);
 
   // Print
   $('btnPrint').addEventListener('click', () => window.print());
+
+  // Export
+  $('btnExport').addEventListener('click', exportToImage);
 
   // Notify
   $('btnNotify').addEventListener('click', requestNotification);
