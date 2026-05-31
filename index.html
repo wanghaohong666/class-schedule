@@ -1,763 +1,837 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>初二1班智能课程表</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --morning-bg: #e3f2fd;
-            --afternoon-bg: #fff9e6;
-            --memorize-bg: #e8f5e9;
-            --break-bg: #f3e5f5;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初二1班智能课程表</title>
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 40%, #ede9fe 100%);
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.55);
+  --card-shadow: 0 8px 32px rgba(99,102,241,0.12);
+  --text-primary: #1e1b4b;
+  --text-secondary: #6366f1;
+  --text-muted: #7c7aaa;
+  --accent: #6366f1;
+  --accent-light: #a5b4fc;
+  --accent-glow: rgba(99,102,241,0.35);
+  --banner-bg: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --banner-text: #ffffff;
+  --table-header-bg: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --table-header-text: #ffffff;
+  --cell-morning: rgba(224,231,255,0.65);
+  --cell-afternoon: rgba(253,230,138,0.45);
+  --cell-memorize: rgba(167,243,208,0.45);
+  --cell-break: rgba(233,213,255,0.50);
+  --cell-hover: rgba(99,102,241,0.15);
+  --cell-current: rgba(99,102,241,0.25);
+  --cell-search-hit: rgba(250,204,21,0.40);
+  --border-light: rgba(99,102,241,0.18);
+  --tab-bg: rgba(255,255,255,0.50);
+  --tab-active-bg: #6366f1;
+  --tab-active-text: #ffffff;
+  --tab-text: #6366f1;
+  --modal-overlay: rgba(0,0,0,0.45);
+  --modal-bg: rgba(255,255,255,0.94);
+  --input-bg: rgba(255,255,255,0.65);
+  --input-border: rgba(99,102,241,0.30);
+  --btn-print-bg: #6366f1;
+  --btn-print-text: #ffffff;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body.dark {
+  --bg-gradient: linear-gradient(135deg, #0f0a2e 0%, #1a1035 40%, #0d0b22 100%);
+  --card-bg: rgba(30,27,58,0.78);
+  --card-border: rgba(99,102,241,0.22);
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.40);
+  --text-primary: #e0e7ff;
+  --text-secondary: #a5b4fc;
+  --text-muted: #8b8ab0;
+  --accent: #818cf8;
+  --accent-light: #6366f1;
+  --accent-glow: rgba(129,140,248,0.45);
+  --banner-bg: linear-gradient(135deg, #2e1a6e 0%, #1e0f4a 100%);
+  --banner-text: #e0e7ff;
+  --table-header-bg: linear-gradient(135deg, #312e81 0%, #4c1d95 100%);
+  --table-header-text: #e0e7ff;
+  --cell-morning: rgba(49,46,129,0.35);
+  --cell-afternoon: rgba(71,52,28,0.30);
+  --cell-memorize: rgba(6,78,59,0.28);
+  --cell-break: rgba(58,18,78,0.28);
+  --cell-hover: rgba(129,140,248,0.18);
+  --cell-current: rgba(129,140,248,0.30);
+  --cell-search-hit: rgba(250,204,21,0.25);
+  --border-light: rgba(129,140,248,0.22);
+  --tab-bg: rgba(30,27,58,0.55);
+  --tab-active-bg: #818cf8;
+  --tab-active-text: #0f0a2e;
+  --tab-text: #a5b4fc;
+  --modal-overlay: rgba(0,0,0,0.65);
+  --modal-bg: rgba(30,27,58,0.94);
+  --input-bg: rgba(30,27,58,0.60);
+  --input-border: rgba(129,140,248,0.35);
+  --btn-print-bg: #818cf8;
+  --btn-print-text: #0f0a2e;
+}
 
-        body {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #333;
-        }
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { font-size:16px; scroll-behavior:smooth; }
+body {
+  font-family:'Microsoft YaHei','PingFang SC','Helvetica Neue',sans-serif;
+  background:var(--bg-gradient);
+  min-height:100vh;
+  color:var(--text-primary);
+  transition:background 0.5s ease, color 0.4s ease;
+  padding:16px;
+  -webkit-tap-highlight-color:transparent;
+}
 
-        .notification-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            padding: 18px 20px;
-            text-align: center;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-size: 20px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
+/* ===== Banner ===== */
+.banner {
+  position:sticky; top:12px; z-index:900;
+  background:var(--banner-bg);
+  color:var(--banner-text);
+  border-radius:16px;
+  padding:14px 22px;
+  display:flex; align-items:center; gap:12px;
+  box-shadow:0 6px 24px rgba(99,102,241,0.35);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:background 0.5s ease;
+}
+.banner-dot {
+  width:13px; height:13px; border-radius:50%; flex-shrink:0;
+}
+.banner-dot.active { background:#34d399; animation:pulse-dot 1.2s infinite; }
+.banner-dot.break  { background:#fbbf24; animation:pulse-dot 1.2s infinite; }
+.banner-dot.idle   { background:#94a3b8; }
+@keyframes pulse-dot {
+  0%,100% { box-shadow:0 0 0 0 rgba(52,211,153,0.6); }
+  50%     { box-shadow:0 0 0 10px rgba(52,211,153,0); }
+}
+.banner-text { font-size:1.05rem; font-weight:700; flex:1; }
+.banner-time { font-size:0.9rem; opacity:0.85; font-variant-numeric:tabular-nums; }
 
-        .status-indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            margin-right: 15px;
-            animation: pulse 1.5s infinite;
-        }
+/* ===== Main Layout ===== */
+.main-wrap {
+  max-width:1400px; margin:20px auto 30px;
+  display:flex; gap:28px; flex-wrap:wrap;
+}
+.timetable-col { flex:3; min-width:320px; }
+.sidebar-col   { flex:1; min-width:260px; display:flex; flex-direction:column; gap:20px; }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+/* ===== Card ===== */
+.card {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:20px;
+  padding:24px;
+  box-shadow:var(--card-shadow);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  transition:background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
 
-        .main-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 100px auto 30px;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+/* ===== Toolbar ===== */
+.toolbar {
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:16px;
+}
+.search-box {
+  flex:1; min-width:160px;
+  background:var(--input-bg);
+  border:1.5px solid var(--input-border);
+  border-radius:12px;
+  padding:10px 16px;
+  font-size:0.95rem;
+  color:var(--text-primary);
+  outline:none;
+  transition:all 0.25s ease;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.search-box::placeholder { color:var(--text-muted); }
+.search-box:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+.btn {
+  border:none; border-radius:12px; padding:10px 18px; font-size:0.9rem;
+  font-weight:600; cursor:pointer; transition:all 0.25s ease;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex; align-items:center; gap:6px;
+  white-space:nowrap;
+}
+.btn-theme {
+  background:var(--tab-bg); color:var(--tab-text);
+  border:1.5px solid var(--border-light);
+}
+.btn-theme:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+.btn-print {
+  background:var(--btn-print-bg); color:var(--btn-print-text);
+  box-shadow:0 4px 14px var(--accent-glow);
+}
+.btn-print:hover { transform:translateY(-2px); box-shadow:0 6px 20px var(--accent-glow); }
+.btn-notify {
+  background:var(--tab-bg); color:var(--tab-text);
+  border:1.5px solid var(--border-light);
+}
+.btn-notify:hover { background:#34d399; color:#fff; border-color:#34d399; }
+.btn-notify.granted { background:#34d399; color:#fff; border-color:#34d399; }
 
-        .timetable-container {
-            flex: 3;
-            min-width: 300px;
-            background: white;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+/* ===== Day Tabs ===== */
+.day-tabs {
+  display:flex; gap:4px; margin-bottom:18px; flex-wrap:wrap;
+  background:var(--tab-bg);
+  border-radius:14px; padding:5px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.day-tab {
+  flex:1; min-width:48px; text-align:center;
+  padding:9px 4px; border-radius:10px; font-size:0.9rem;
+  font-weight:600; cursor:pointer; border:none; background:transparent;
+  color:var(--tab-text); transition:all 0.25s ease;
+}
+.day-tab:hover { background:rgba(99,102,241,0.18); }
+.day-tab.active { background:var(--tab-active-bg); color:var(--tab-active-text); box-shadow:0 3px 10px var(--accent-glow); }
 
-        .timetable-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 4px solid var(--secondary);
-        }
+/* ===== Timetable Grid ===== */
+.table-scroll { overflow-x:auto; border-radius:16px; }
+.timetable {
+  width:100%; border-collapse:separate; border-spacing:0;
+  min-width:720px;
+}
+.timetable thead th {
+  background:var(--table-header-bg);
+  color:var(--table-header-text);
+  padding:14px 8px; font-size:1rem; font-weight:700;
+  position:sticky; top:0; z-index:2;
+  text-align:center;
+}
+.timetable thead th:first-child {
+  border-radius:14px 0 0 0;
+  width:110px;
+}
+.timetable thead th:last-child { border-radius:0 14px 0 0; }
+.timetable tbody td {
+  padding:10px 6px; text-align:center; font-size:0.92rem;
+  font-weight:600; cursor:pointer; position:relative;
+  transition:all 0.3s ease;
+  border-bottom:1px solid var(--border-light);
+}
+.timetable tbody td:first-child {
+  font-size:0.8rem; line-height:1.4; cursor:default; font-weight:500;
+  color:var(--text-muted); min-width:100px;
+}
+.timetable tbody td:first-child .period-name { font-weight:700; color:var(--text-primary); font-size:0.88rem; }
+.timetable tbody td.cell-course:hover {
+  background:var(--cell-hover); transform:scale(1.03); z-index:1;
+  border-radius:8px; box-shadow:0 4px 16px var(--accent-glow);
+}
+/* cell types */
+.cell-morning   { background:var(--cell-morning); }
+.cell-afternoon { background:var(--cell-afternoon); }
+.cell-memorize  { background:var(--cell-memorize); }
+.cell-break     { background:var(--cell-break); }
 
-        .timetable-header h1 {
-            color: var(--primary);
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+/* current period pulse */
+@keyframes pulse-glow {
+  0%,100% { box-shadow:inset 0 0 0 0 var(--accent-glow), 0 0 0 0 var(--accent-glow); }
+  50%     { box-shadow:inset 0 0 18px 3px var(--accent-glow), 0 0 20px 4px var(--accent-glow); }
+}
+.cell-current {
+  background:var(--cell-current) !important;
+  animation:pulse-glow 2s ease-in-out infinite;
+  border-radius:8px;
+  font-weight:800 !important;
+}
 
-        .timetable-header p {
-            color: #666;
-            font-size: 18px;
-        }
+/* search highlight */
+.cell-hit {
+  background:var(--cell-search-hit) !important;
+  border-radius:8px;
+  font-weight:800 !important;
+}
 
-        .canvas-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            background: #fafafa;
-            padding: 15px;
-        }
+/* ===== Sidebar ===== */
+.date-big { font-size:3.2rem; font-weight:800; color:var(--accent); line-height:1; }
+.weekday-label { font-size:1.2rem; color:var(--text-muted); margin:4px 0 16px; }
+.summary-box { background:rgba(99,102,241,0.08); border-radius:14px; padding:18px; font-size:0.95rem; line-height:1.7; }
+.legend-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.legend-item { display:flex; align-items:center; gap:8px; font-size:0.85rem; }
+.legend-swatch { width:18px; height:18px; border-radius:5px; flex-shrink:0; }
+.swatch-morning   { background:rgba(224,231,255,0.85); border:1px solid #a5b4fc; }
+.swatch-afternoon { background:rgba(253,230,138,0.65); border:1px solid #fcd34d; }
+.swatch-memorize  { background:rgba(167,243,208,0.65); border:1px solid #6ee7b7; }
+.swatch-break     { background:rgba(233,213,255,0.70); border:1px solid #c4b5fd; }
+.quote-card { background:linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color:#fff; }
+.quote-card h3 { color:#fff; border-bottom-color:rgba(255,255,255,0.3); }
+.quote-text { font-style:italic; font-size:1.05rem; line-height:1.6; text-align:center; padding:12px 0; }
+.quote-author { text-align:right; font-size:0.9rem; opacity:0.85; }
 
-        #timetableCanvas {
-            display: block;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
+/* ===== Modal ===== */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:var(--modal-overlay);
+  align-items:center; justify-content:center;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.modal-overlay.show { display:flex; }
+.modal-box {
+  background:var(--modal-bg);
+  border:1px solid var(--card-border);
+  border-radius:22px; padding:32px; max-width:420px; width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  text-align:center;
+  animation:modal-in 0.3s ease;
+}
+@keyframes modal-in { from{opacity:0;transform:translateY(30px) scale(0.95);} to{opacity:1;transform:translateY(0) scale(1);} }
+.modal-course { font-size:2rem; font-weight:800; color:var(--accent); margin-bottom:6px; }
+.modal-period { font-size:1.1rem; color:var(--text-muted); margin-bottom:4px; }
+.modal-time   { font-size:1.3rem; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+.modal-day    { font-size:1rem; color:var(--text-muted); }
+.modal-close {
+  margin-top:20px; padding:10px 28px; border:none; border-radius:12px;
+  background:var(--accent); color:#fff; font-size:1rem; font-weight:600; cursor:pointer;
+  transition:all 0.25s ease;
+}
+.modal-close:hover { transform:scale(1.05); box-shadow:0 6px 20px var(--accent-glow); }
 
-        .sidebar {
-            flex: 1;
-            min-width: 280px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
+/* ===== Print ===== */
+@media print {
+  body { background:#fff !important; padding:0; }
+  .banner, .toolbar, .day-tabs, .sidebar-col, .modal-overlay { display:none !important; }
+  .main-wrap { display:block; max-width:100%; margin:0; }
+  .timetable-col { flex:none; min-width:auto; }
+  .card { background:#fff !important; box-shadow:none !important; border:1px solid #ddd !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; padding:12px !important; }
+  .timetable thead th { background:#4f46e5 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .timetable tbody td { border-bottom:1px solid #ddd !important; }
+  .cell-morning { background:#e0e7ff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .cell-afternoon { background:#fef3c7 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .cell-memorize { background:#d1fae5 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .cell-break { background:#ede9fe !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .cell-current { animation:none !important; background:rgba(99,102,241,0.30) !important; }
+  .timetable tbody td.cell-course:hover { transform:none !important; box-shadow:none !important; background:inherit !important; }
+  .table-scroll { overflow:visible; }
+}
 
-        .card {
-            background: white;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin: 0 0 25px 0;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-        }
-
-        .card h3 i {
-            margin-right: 12px;
-        }
-
-        .date-display {
-            text-align: center;
-        }
-
-        .date-large {
-            font-size: 60px;
-            font-weight: bold;
-            color: var(--secondary);
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-
-        .weekday {
-            font-size: 22px;
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .summary {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 17px;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .legend {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 15px;
-        }
-
-        .legend-color {
-            width: 22px;
-            height: 22px;
-            margin-right: 12px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .quote-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .quote-card h3 {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.3);
-        }
-
-        .quote-text {
-            font-style: italic;
-            font-size: 18px;
-            line-height: 1.6;
-            text-align: center;
-            padding: 15px 0;
-        }
-
-        .author {
-            text-align: right;
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 15px;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .control-btn {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 10px rgba(52, 152, 219, 0.3);
-        }
-
-        .control-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .control-btn.reset {
-            background: var(--danger);
-            box-shadow: 0 5px 10px rgba(231, 76, 60, 0.3);
-        }
-
-        @media (max-width: 1100px) {
-            .main-container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                order: -1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            .timetable-container, .card {
-                padding: 20px;
-            }
-            
-            .timetable-header h1 {
-                font-size: 26px;
-            }
-            
-            .date-large {
-                font-size: 48px;
-            }
-            
-            .notification-banner {
-                font-size: 17px;
-                padding: 15px;
-            }
-            
-            .legend {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .control-btn {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .date-large {
-                font-size: 42px;
-            }
-            
-            .timetable-header h1 {
-                font-size: 22px;
-            }
-            
-            .notification-banner {
-                font-size: 15px;
-                padding: 12px;
-            }
-        }
-    </style>
+/* ===== Responsive ===== */
+@media (max-width:1100px) {
+  .main-wrap { flex-direction:column; }
+  .sidebar-col { order:-1; flex-direction:row; flex-wrap:wrap; gap:12px; }
+  .sidebar-col .card { flex:1; min-width:220px; }
+}
+@media (max-width:768px) {
+  body { padding:8px; }
+  .banner { padding:10px 14px; border-radius:12px; font-size:0.9rem; }
+  .card { padding:16px; border-radius:16px; }
+  .date-big { font-size:2.4rem; }
+  .timetable { min-width:600px; font-size:0.82rem; }
+  .timetable thead th { padding:10px 4px; font-size:0.85rem; }
+  .timetable tbody td { padding:8px 3px; font-size:0.78rem; }
+  .toolbar { gap:8px; }
+  .btn { padding:8px 12px; font-size:0.8rem; }
+  .day-tab { font-size:0.78rem; padding:7px 2px; }
+}
+@media (max-width:480px) {
+  .sidebar-col { flex-direction:column; }
+  .sidebar-col .card { min-width:auto; }
+  .date-big { font-size:2rem; }
+  .timetable { min-width:500px; }
+  .timetable thead th:first-child { width:80px; }
+  .timetable tbody td:first-child { min-width:80px; }
+}
+</style>
 </head>
 <body>
-    <div class="notification-banner" id="notificationBanner">
-        <div class="status-indicator" id="statusIndicator"></div>
-        <span id="countdownText">正在加载倒计时...</span>
+
+<!-- Notification Banner -->
+<div class="banner" id="banner">
+  <div class="banner-dot idle" id="bannerDot"></div>
+  <span class="banner-text" id="bannerText">正在加载...</span>
+  <span class="banner-time" id="bannerTime"></span>
+</div>
+
+<!-- Main -->
+<div class="main-wrap">
+
+  <!-- Timetable Column -->
+  <div class="timetable-col">
+    <div class="card">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <input type="text" class="search-box" id="searchInput" placeholder="搜索课程...">
+        <button class="btn btn-theme" id="btnTheme" title="切换暗黑/明亮模式">
+          <span id="btnThemeIcon">🌙</span> <span id="btnThemeLabel">暗黑</span>
+        </button>
+        <button class="btn btn-notify" id="btnNotify" title="开启桌面通知">
+          🔔 <span id="btnNotifyLabel">通知</span>
+        </button>
+        <button class="btn btn-print" id="btnPrint" title="一键打印课程表">🖨️ 打印</button>
+      </div>
+
+      <!-- Day Tabs -->
+      <div class="day-tabs" id="dayTabs"></div>
+
+      <!-- Table -->
+      <div class="table-scroll">
+        <table class="timetable" id="timetableTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
     </div>
+  </div>
 
-    <div class="main-container">
-        <div class="timetable-container">
-            <div class="timetable-header">
-                <h1>📅 初二1班课程表</h1>
-                <p>2024-2025学年 | 实时倒计时系统</p>
-            </div>
-            
-            <div class="canvas-wrapper">
-                <canvas id="timetableCanvas" width="1000" height="750"></canvas>
-            </div>
-            
-            <div class="controls">
-                <button class="control-btn" id="refreshBtn">🔄 刷新课程表</button>
-                <button class="control-btn reset" id="resetViewBtn">🔍 重置视图</button>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <div class="card">
-                <h3><i>📅</i> 今日概览</h3>
-                <div class="date-display">
-                    <div class="date-large" id="currentDate">--</div>
-                    <div class="weekday" id="currentWeekday">----</div>
-                    <div class="summary" id="dailySummary">正在加载课程信息...</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><i>🎨</i> 图例说明</h3>
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: var(--morning-bg);"></div>
-                        <span>上午课程 (45分钟)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: var(--afternoon-bg);"></div>
-                        <span>下午课程 (40分钟)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: var(--memorize-bg);"></div>
-                        <span>生地背书</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: var(--break-bg);"></div>
-                        <span>早读/晨练</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card quote-card">
-                <h3><i>💡</i> 每日箴言</h3>
-                <div class="quote-text" id="dailyQuote">业精于勤，荒于嬉；行成于思，毁于随。</div>
-                <div class="author" id="quoteAuthor">—— 韩愈</div>
-            </div>
-        </div>
+  <!-- Sidebar -->
+  <div class="sidebar-col">
+    <div class="card">
+      <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid var(--border-light);margin-bottom:16px;">今日概览</h3>
+      <div class="date-big" id="currentDate">--</div>
+      <div class="weekday-label" id="currentWeekday">----</div>
+      <div class="summary-box" id="dailySummary">正在加载课程信息...</div>
     </div>
+    <div class="card">
+      <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid var(--border-light);margin-bottom:16px;">图例说明</h3>
+      <div class="legend-grid">
+        <div class="legend-item"><span class="legend-swatch swatch-morning"></span>上午课程(45分钟)</div>
+        <div class="legend-item"><span class="legend-swatch swatch-afternoon"></span>下午课程(40分钟)</div>
+        <div class="legend-item"><span class="legend-swatch swatch-memorize"></span>生地背书</div>
+        <div class="legend-item"><span class="legend-swatch swatch-break"></span>早读/晨练</div>
+      </div>
+    </div>
+    <div class="card quote-card">
+      <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid rgba(255,255,255,0.3);margin-bottom:16px;">每日箴言</h3>
+      <div class="quote-text" id="dailyQuote">业精于勤，荒于嬉；行成于思，毁于随。</div>
+      <div class="quote-author" id="quoteAuthor">—— 韩愈</div>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // 课程数据 - 完全按照您的要求配置
-        const timetableData = {
-            days: ['周一', '周二', '周三', '周四', '周五'],
-            periods: [
-                { name: '早读/晨练', time: '7:30-7:50', duration: 20, type: 'break' },
-                { name: '第1节', time: '8:00-8:45', duration: 45, type: 'morning' },
-                { name: '第2节', time: '8:55-9:40', duration: 45, type: 'morning' },
-                { name: '第3节', time: '9:50-10:35', duration: 45, type: 'morning' },
-                { name: '生地背书', time: '10:45-11:30', duration: 45, type: 'memorize' },
-                { name: '第4节', time: '11:40-12:25', duration: 45, type: 'morning' },
-                { name: '第5节', time: '14:40-15:20', duration: 40, type: 'afternoon' },
-                { name: '第6节', time: '15:30-16:10', duration: 40, type: 'afternoon' },
-                { name: '生地背书', time: '16:20-17:05', duration: 45, type: 'memorize' },
-                { name: '第7节', time: '17:15-17:55', duration: 40, type: 'afternoon' },
-                { name: '第8节', time: '18:05-18:45', duration: 40, type: 'afternoon' }
-            ],
-            courses: [
-                // 周一
-                ['升旗', '专题教育', '历史', '音乐', '生地背书', '体育', '语文', '数学', '生地背书', '综合实践', '英语'],
-                // 周二
-                ['英语早读', '英语', '道法', '物理', '生地背书', '生物', '体育', '美术', '生地背书', '语文', '数学'],
-                // 周三
-                ['生物早读', '生物', '语文', '道法', '生地背书', '地理', '英语', '体育', '生地背书', '数学', '物理'],
-                // 周四
-                ['语文早读', '语文', '英语', '地理', '生地背书', '信息科技', '数学', '数学', '生地背书', '物理', '生物'],
-                // 周五
-                ['跑操', '数学', '语文', '生物', '生地背书', '历史', '劳动', '心理健康', '生地背书', '英语', '地理']
-            ]
-        };
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-course" id="modalCourse"></div>
+    <div class="modal-period" id="modalPeriod"></div>
+    <div class="modal-time" id="modalTime"></div>
+    <div class="modal-day" id="modalDay"></div>
+    <button class="modal-close" id="modalClose">关闭</button>
+  </div>
+</div>
 
-        // 每日箴言
-        const dailyQuotes = [
-            { text: "学而不思则罔，思而不学则殆。", author: "孔子" },
-            { text: "书山有路勤为径，学海无涯苦作舟。", author: "韩愈" },
-            { text: "读书破万卷，下笔如有神。", author: "杜甫" },
-            { text: "黑发不知勤学早，白首方悔读书迟。", author: "颜真卿" },
-            { text: "业精于勤，荒于嬉；行成于思，毁于随。", author: "韩愈" },
-            { text: "一日之计在于晨，一年之计在于春。", author: "萧绎" },
-            { text: "锲而不舍，金石可镂。", author: "荀子" }
-        ];
+<script>
+// ===== DATA =====
+const timetableData = {
+  days: ['周一','周二','周三','周四','周五'],
+  periods: [
+    { name:'早读/晨练', time:'7:30-7:50',  duration:20, type:'break' },
+    { name:'第1节',     time:'8:00-8:45',  duration:45, type:'morning' },
+    { name:'第2节',     time:'8:55-9:40',  duration:45, type:'morning' },
+    { name:'第3节',     time:'9:50-10:35', duration:45, type:'morning' },
+    { name:'生地背书',  time:'10:45-11:30',duration:45, type:'memorize' },
+    { name:'第4节',     time:'11:40-12:25',duration:45, type:'morning' },
+    { name:'第5节',     time:'14:40-15:20',duration:40, type:'afternoon' },
+    { name:'第6节',     time:'15:30-16:10',duration:40, type:'afternoon' },
+    { name:'生地背书',  time:'16:20-17:05',duration:45, type:'memorize' },
+    { name:'第7节',     time:'17:15-17:55',duration:40, type:'afternoon' },
+    { name:'第8节',     time:'18:05-18:45',duration:40, type:'afternoon' }
+  ],
+  courses: [
+    ['升旗','专题教育','历史','音乐','生地背书','体育','语文','数学','生地背书','综合实践','英语'],
+    ['英语早读','英语','道法','物理','生地背书','生物','体育','美术','生地背书','语文','数学'],
+    ['生物早读','生物','语文','道法','生地背书','地理','英语','体育','生地背书','数学','物理'],
+    ['语文早读','语文','英语','地理','生地背书','信息科技','数学','数学','生地背书','物理','生物'],
+    ['跑操','数学','语文','生物','生地背书','历史','劳动','心理健康','生地背书','英语','地理']
+  ]
+};
 
-        // 系统状态
-        let systemState = {
-            currentTime: new Date(),
-            currentDay: 1,
-            currentPeriod: -1,
-            nextPeriod: -1,
-            isSchoolDay: true
-        };
+const dailyQuotes = [
+  { text:'学而不思则罔，思而不学则殆。', author:'孔子' },
+  { text:'书山有路勤为径，学海无涯苦作舟。', author:'韩愈' },
+  { text:'读书破万卷，下笔如有神。', author:'杜甫' },
+  { text:'黑发不知勤学早，白首方悔读书迟。', author:'颜真卿' },
+  { text:'业精于勤，荒于嬉；行成于思，毁于随。', author:'韩愈' },
+  { text:'一日之计在于晨，一年之计在于春。', author:'萧绎' },
+  { text:'锲而不舍，金石可镂。', author:'荀子' }
+];
 
-        // DOM元素
-        const canvas = document.getElementById('timetableCanvas');
-        const ctx = canvas.getContext('2d');
-        const notificationBanner = document.getElementById('notificationBanner');
-        const countdownText = document.getElementById('countdownText');
-        const statusIndicator = document.getElementById('statusIndicator');
-        const currentDateEl = document.getElementById('currentDate');
-        const currentWeekdayEl = document.getElementById('currentWeekday');
-        const dailySummaryEl = document.getElementById('dailySummary');
-        const dailyQuoteEl = document.getElementById('dailyQuote');
-        const quoteAuthorEl = document.getElementById('quoteAuthor');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const resetViewBtn = document.getElementById('resetViewBtn');
+// ===== STATE =====
+let state = {
+  activeDay: 0,        // 0-4 周一至周五
+  currentPeriodIdx: -1,
+  nextPeriodIdx: -1,
+  searchQuery: '',
+  darkMode: false,
+  notifyGranted: false,
+  notifiedPeriods: {}  // key: "dayIdx-periodIdx"
+};
 
-        // 颜色映射
-        const colors = {
-            headerBg: '#2c3e50',
-            headerText: '#ffffff',
-            morningBg: '#e3f2fd',
-            afternoonBg: '#fff9e6',
-            memorizeBg: '#e8f5e9',
-            breakBg: '#f3e5f5',
-            currentBorder: '#3498db',
-            nextBorder: '#f39c12',
-            border: '#bdc3c7',
-            text: '#333333'
-        };
+// ===== DOM REFS =====
+const $ = (id) => document.getElementById(id);
+const banner = $('banner');
+const bannerDot = $('bannerDot');
+const bannerText = $('bannerText');
+const bannerTime = $('bannerTime');
+const tableHead = $('tableHead');
+const tableBody = $('tableBody');
+const dayTabs = $('dayTabs');
+const searchInput = $('searchInput');
+const currentDate = $('currentDate');
+const currentWeekday = $('currentWeekday');
+const dailySummary = $('dailySummary');
+const dailyQuote = $('dailyQuote');
+const quoteAuthor = $('quoteAuthor');
+const modalOverlay = $('modalOverlay');
+const modalCourse = $('modalCourse');
+const modalPeriod = $('modalPeriod');
+const modalTime = $('modalTime');
+const modalDay = $('modalDay');
 
-        // 初始化系统
-        function initSystem() {
-            updateSystemTime();
-            drawTimetable();
-            updateSidebar();
-            setupEventListeners();
-            
-            // 每秒更新一次
-            setInterval(() => {
-                updateSystemTime();
-                drawTimetable();
-                updateCountdown();
-            }, 1000);
-        }
+// ===== INIT =====
+function init() {
+  // set today
+  const now = new Date();
+  const dow = now.getDay(); // 0=Sun, 6=Sat
+  if (dow >= 1 && dow <= 5) {
+    state.activeDay = dow - 1;
+  } else {
+    state.activeDay = 0; // default to Monday on weekend
+  }
 
-        // 更新系统时间
-        function updateSystemTime() {
-            systemState.currentTime = new Date();
-            const day = systemState.currentTime.getDay();
-            
-            systemState.currentDay = (day >= 1 && day <= 5) ? day : 1;
-            systemState.isSchoolDay = (day >= 1 && day <= 5);
-            
-            const hours = systemState.currentTime.getHours();
-            const minutes = systemState.currentTime.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            
-            systemState.currentPeriod = -1;
-            systemState.nextPeriod = -1;
-            
-            // 查找当前课程
-            for (let i = 0; i < timetableData.periods.length; i++) {
-                const period = timetableData.periods[i];
-                const [startHour, startMin] = period.time.split('-')[0].split(':').map(Number);
-                const [endHour, endMin] = period.time.split('-')[1].split(':').map(Number);
-                
-                const startTime = startHour * 60 + startMin;
-                const endTime = endHour * 60 + endMin;
-                
-                if (totalMinutes >= startTime && totalMinutes <= endTime) {
-                    systemState.currentPeriod = i;
-                    break;
-                }
-                
-                if (totalMinutes < startTime && systemState.nextPeriod === -1) {
-                    systemState.nextPeriod = i;
-                }
-            }
-        }
+  buildDayTabs();
+  buildTable();
+  updateAll();
+  bindEvents();
 
-        // 绘制课程表
-        function drawTimetable() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const cellWidth = 140;
-            const cellHeight = 55;
-            const headerHeight = 70;
-            const leftColWidth = 130;
-            
-            // 绘制表头
-            ctx.fillStyle = colors.headerBg;
-            ctx.fillRect(leftColWidth, 0, cellWidth * timetableData.days.length, headerHeight);
-            
-            ctx.fillStyle = colors.headerText;
-            ctx.font = 'bold 20px Microsoft YaHei';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // 绘制左上角
-            ctx.fillStyle = colors.headerBg;
-            ctx.fillRect(0, 0, leftColWidth, headerHeight);
-            ctx.fillStyle = colors.headerText;
-            ctx.font = 'bold 18px Microsoft YaHei';
-            ctx.fillText('时间/星期', leftColWidth/2, headerHeight/2);
-            
-            // 绘制星期几
-            ctx.font = 'bold 20px Microsoft YaHei';
-            for (let i = 0; i < timetableData.days.length; i++) {
-                const x = leftColWidth + i * cellWidth + cellWidth/2;
-                const y = headerHeight/2;
-                ctx.fillText(timetableData.days[i], x, y);
-            }
-            
-            // 绘制时间段和课程
-            for (let row = 0; row < timetableData.periods.length; row++) {
-                const period = timetableData.periods[row];
-                const y = headerHeight + row * cellHeight;
-                
-                // 确定背景色
-                let bgColor = colors.morningBg;
-                if (period.type === 'afternoon') bgColor = colors.afternoonBg;
-                if (period.type === 'memorize') bgColor = colors.memorizeBg;
-                if (period.type === 'break') bgColor = colors.breakBg;
-                
-                // 确定边框颜色和宽度
-                let borderColor = colors.border;
-                let borderWidth = 1;
-                
-                if (systemState.currentPeriod === row) {
-                    borderColor = colors.currentBorder;
-                    borderWidth = 4;
-                } else if (systemState.nextPeriod === row) {
-                    borderColor = colors.nextBorder;
-                    borderWidth = 3;
-                }
-                
-                // 绘制左侧时间列
-                ctx.fillStyle = bgColor;
-                ctx.fillRect(0, y, leftColWidth, cellHeight);
-                
-                ctx.strokeStyle = borderColor;
-                ctx.lineWidth = borderWidth;
-                ctx.strokeRect(0, y, leftColWidth, cellHeight);
-                
-                // 绘制时间文本
-                ctx.fillStyle = colors.text;
-                ctx.font = 'bold 16px Microsoft YaHei';
-                ctx.fillText(period.name, leftColWidth/2, y + cellHeight/2 - 12);
-                ctx.font = '14px Microsoft YaHei';
-                ctx.fillText(period.time, leftColWidth/2, y + cellHeight/2 + 12);
-                
-                // 绘制课程单元格
-                for (let col = 0; col < timetableData.days.length; col++) {
-                    const x = leftColWidth + col * cellWidth;
-                    const course = timetableData.courses[col][row];
-                    
-                    ctx.fillStyle = bgColor;
-                    ctx.fillRect(x, y, cellWidth, cellHeight);
-                    
-                    ctx.strokeStyle = borderColor;
-                    ctx.lineWidth = borderWidth;
-                    ctx.strokeRect(x, y, cellWidth, cellHeight);
-                    
-                    ctx.fillStyle = colors.text;
-                    ctx.font = 'bold 18px Microsoft YaHei';
-                    ctx.fillText(course, x + cellWidth/2, y + cellHeight/2);
-                }
-            }
-            
-            // 添加当前时间指示线
-            addCurrentTimeIndicator(headerHeight, leftColWidth, cellWidth, cellHeight);
-        }
+  // refresh every second
+  setInterval(updateAll, 1000);
 
-        // 添加当前时间指示线
-        function addCurrentTimeIndicator(headerHeight, leftColWidth, cellWidth, cellHeight) {
-            const hours = systemState.currentTime.getHours();
-            const minutes = systemState.currentTime.getMinutes();
-            const seconds = systemState.currentTime.getSeconds();
-            const totalMinutes = hours * 60 + minutes;
-            
-            for (let i = 0; i < timetableData.periods.length; i++) {
-                const period = timetableData.periods[i];
-                const [startHour, startMin] = period.time.split('-')[0].split(':').map(Number);
-                const [endHour, endMin] = period.time.split('-')[1].split(':').map(Number);
-                
-                const startTime = startHour * 60 + startMin;
-                const endTime = endHour * 60 + endMin;
-                
-                if (totalMinutes >= startTime && totalMinutes <= endTime) {
-                    const ratio = (totalMinutes - startTime) / (endTime - startTime);
-                    const y = headerHeight + i * cellHeight + ratio * cellHeight;
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(leftColWidth, y);
-                    ctx.lineTo(leftColWidth + timetableData.days.length * cellWidth, y);
-                    ctx.strokeStyle = '#e74c3c';
-                    ctx.lineWidth = 4;
-                    ctx.setLineDash([10, 5]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    
-                    ctx.fillStyle = '#e74c3c';
-                    ctx.font = 'bold 16px Microsoft YaHei';
-                    ctx.textAlign = 'left';
-                    const timeStr = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-                    ctx.fillText(timeStr, leftColWidth + 15, y - 10);
-                    ctx.textAlign = 'center';
-                    
-                    break;
-                }
-            }
-        }
+  // check notification every 30s
+  setInterval(checkNotifications, 30000);
+}
 
-        // 更新倒计时显示
-        function updateCountdown() {
-            const now = systemState.currentTime;
-            const day = now.getDay();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            const totalMinutes = hours * 60 + minutes;
-            
-            let countdownMsg = "";
-            let bgColor = colors.headerBg;
-            let indicatorColor = '#3498db';
-            
-            // 周末处理
-            if (day === 0 || day === 6) {
-                countdownMsg = "📅 今天是周末，没有课程安排";
-                bgColor = '#9b59b6';
-                indicatorColor = '#9b59b6';
-            } 
-            // 上课日
-            else if (day >= 1 && day <= 5) {
-                const todayCourses = timetableData.courses[day - 1];
-                let currentPeriod = systemState.currentPeriod;
-                let nextPeriod = systemState.nextPeriod;
-                
-                if (currentPeriod !== -1) {
-                    // 正在上课，显示下课倒计时
-                    const period = timetableData.periods[currentPeriod];
-                    const [endHour, endMin] = period.time.split('-')[1].split(':').map(Number);
-                    const endTime = endHour * 60 + endMin;
-                    const timeLeft = endTime - totalMinutes;
-                    const minutesLeft = Math.floor(timeLeft);
-                    const secondsLeft = 59 - seconds;
-                    
-                    countdownMsg = `📚 正在上：${todayCourses[currentPeriod]} | 下课还有 ${minutesLeft}分${secondsLeft}秒`;
-                    bgColor = '#3498db';
-                    indicatorColor = '#2ecc71';
-                } else if (nextPeriod !== -1) {
-                    // 课间休息，显示上课倒计时
-                    const period = timetableData.periods[nextPeriod];
-                    const [startHour, startMin] = period.time.split('-')[0].split(':').map(Number);
-                    const startTime = startHour * 60 + startMin;
-                    const timeToNext = startTime - totalMinutes;
-                    const minutesToNext = Math.floor(timeToNext);
-                    const secondsToNext = 59 - seconds;
-                    
-                    countdownMsg = `☕ 课间休息 | 距离下节 ${todayCourses[nextPeriod]} 还有 ${minutesToNext}分${secondsToNext}秒`;
-                    bgColor = '#27ae60';
-                    indicatorColor = '#f39c12';
-                } else if (totalMinutes < 450) {
-                    // 上课前
-                    const [startHour, startMin] = timetableData.periods[0].time.split('-')[0].split(':').map(Number);
-                    const startTime = startHour * 60 + startMin;
-                    const timeToFirst = startTime - totalMinutes;
-                    const minutesToFirst = Math.floor(timeToFirst);
-                    const secondsToFirst = 59 - seconds;
-                    
-                    countdownMsg = `🌅 距离第一节课还有 ${minutesToFirst}分${secondsToFirst}秒`;
-                    bgColor = '#2c3e50';
-                    indicatorColor = '#3498db';
-                } else {
-                    // 课程结束
-                    countdownMsg = "🎉 今日课程已全部结束";
-                    bgColor = '#2c3e50';
-                    indicatorColor = '#95a5a6';
-                }
-            }
-            
-            notificationBanner.style.background = bgColor;
-            statusIndicator.style.backgroundColor = indicatorColor;
-            countdownText.textContent = countdownMsg;
-        }
+// ===== BUILD DAY TABS =====
+function buildDayTabs() {
+  dayTabs.innerHTML = '';
+  timetableData.days.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (i === state.activeDay ? ' active' : '');
+    btn.textContent = d;
+    btn.addEventListener('click', () => {
+      state.activeDay = i;
+      document.querySelectorAll('.day-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      buildTable();
+      updateAll();
+    });
+    dayTabs.appendChild(btn);
+  });
+}
 
-        // 更新侧边栏
-        function updateSidebar() {
-            const now = systemState.currentTime;
-            const day = now.getDay();
-            const month = now.getMonth() + 1;
-            const date = now.getDate();
-            
-            currentDateEl.textContent = `${month}/${date}`;
-            
-            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-            currentWeekdayEl.textContent = weekdays[day];
-            
-            // 更新每日箴言
-            const quoteIndex = now.getDate() % dailyQuotes.length;
-            dailyQuoteEl.textContent = `"${dailyQuotes[quoteIndex].text}"`;
-            quoteAuthorEl.textContent = `—— ${dailyQuotes[quoteIndex].author}`;
-            
-            // 更新课程摘要
-            if (day >= 1 && day <= 5) {
-                const todayCourses = timetableData.courses[day - 1];
-                const totalClasses = todayCourses.filter(c => c && c !== '').length;
-                const currentHour = now.getHours();
-                
-                let greeting = '';
-                if (currentHour < 12) greeting = '上午好！';
-                else if (currentHour < 18) greeting = '下午好！';
-                else greeting = '晚上好！';
-                
-                dailySummaryEl.innerHTML = `${greeting}<br>今日共 <strong>${totalClasses}</strong> 节课。<br>当前是 ${timetableData.periods[systemState.currentPeriod]?.name || '休息时间'}。`;
-            } else {
-                dailySummaryEl.innerHTML = `今天是周末，没有课程安排。<br>可以好好休息，也可以适当复习功课。<br>劳逸结合，效率更高！`;
-            }
-        }
+// ===== BUILD TABLE =====
+function buildTable() {
+  // thead
+  tableHead.innerHTML = '';
+  const hr = document.createElement('tr');
+  const th0 = document.createElement('th');
+  th0.textContent = '时间/节次';
+  hr.appendChild(th0);
+  timetableData.days.forEach((d, i) => {
+    const th = document.createElement('th');
+    if (i === state.activeDay) {
+      th.innerHTML = '<u>' + d + '</u>';
+    } else {
+      th.textContent = d;
+    }
+    hr.appendChild(th);
+  });
+  tableHead.innerHTML = '';
+  tableHead.appendChild(hr);
 
-        // 设置事件监听器
-        function setupEventListeners() {
-            refreshBtn.addEventListener('click', () => {
-                updateSystemTime();
-                drawTimetable();
-                updateCountdown();
-                updateSidebar();
-            });
-            
-            resetViewBtn.addEventListener('click', () => {
-                const canvasWrapper = document.querySelector('.canvas-wrapper');
-                canvasWrapper.scrollLeft = 0;
-            });
-        }
+  // tbody
+  tableBody.innerHTML = '';
+  for (let r = 0; r < timetableData.periods.length; r++) {
+    const period = timetableData.periods[r];
+    const tr = document.createElement('tr');
+    // time column
+    const tdTime = document.createElement('td');
+    tdTime.innerHTML = '<span class="period-name">' + period.name + '</span><br>' + period.time;
+    tr.appendChild(tdTime);
+    // course columns
+    for (let c = 0; c < timetableData.days.length; c++) {
+      const td = document.createElement('td');
+      td.textContent = timetableData.courses[c][r];
+      td.className = 'cell-course cell-' + period.type;
+      td.dataset.day = c;
+      td.dataset.period = r;
+      td.addEventListener('click', () => showModal(c, r));
+      tr.appendChild(td);
+    }
+    tableBody.appendChild(tr);
+  }
+}
 
-        // 初始化系统
-        initSystem();
-    </script>
+// ===== UPDATE ALL =====
+function updateAll() {
+  const now = new Date();
+  const dow = now.getDay();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const totalMinutes = hours * 60 + minutes;
+
+  // Update sidebar
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  currentDate.textContent = month + '/' + date;
+  const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+  currentWeekday.textContent = weekdays[dow];
+  const qi = now.getDate() % dailyQuotes.length;
+  dailyQuote.textContent = '"' + dailyQuotes[qi].text + '"';
+  quoteAuthor.textContent = '—— ' + dailyQuotes[qi].author;
+
+  // Find current/next period
+  let cp = -1, np = -1;
+  for (let i = 0; i < timetableData.periods.length; i++) {
+    const p = timetableData.periods[i];
+    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+    const [eh, em] = p.time.split('-')[1].split(':').map(Number);
+    const st = sh * 60 + sm;
+    const et = eh * 60 + em;
+    if (totalMinutes >= st && totalMinutes <= et) { cp = i; break; }
+    if (totalMinutes < st && np === -1) { np = i; }
+  }
+  state.currentPeriodIdx = cp;
+  state.nextPeriodIdx = np;
+
+  // Banner
+  let bannerMsg = '', bannerColor = '', dotClass = 'idle';
+  const timeStr = hours.toString().padStart(2,'0') + ':' + minutes.toString().padStart(2,'0') + ':' + seconds.toString().padStart(2,'0');
+  bannerTime.textContent = timeStr;
+
+  const isSchoolDay = (dow >= 1 && dow <= 5);
+  if (!isSchoolDay) {
+    bannerMsg = '今天是周末，没有课程安排';
+    dotClass = 'idle';
+  } else if (cp !== -1) {
+    const p = timetableData.periods[cp];
+    const [eh, em] = p.time.split('-')[1].split(':').map(Number);
+    const et = eh * 60 + em;
+    const left = et - totalMinutes;
+    const leftMin = Math.floor(left);
+    const leftSec = 59 - seconds;
+    const courseName = timetableData.courses[dow - 1][cp];
+    bannerMsg = '正在上课：' + courseName + ' | 下课还有 ' + leftMin + '分' + leftSec + '秒';
+    dotClass = 'active';
+  } else if (np !== -1) {
+    const p = timetableData.periods[np];
+    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+    const st = sh * 60 + sm;
+    const left = st - totalMinutes;
+    const leftMin = Math.floor(left);
+    const leftSec = 59 - seconds;
+    const courseName = timetableData.courses[dow - 1][np];
+    bannerMsg = '课间休息 | 下节 ' + courseName + ' 还有 ' + leftMin + '分' + leftSec + '秒';
+    dotClass = 'break';
+  } else if (totalMinutes < 450) {
+    const p = timetableData.periods[0];
+    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+    const st = sh * 60 + sm;
+    const left = st - totalMinutes;
+    const leftMin = Math.floor(left);
+    const leftSec = 59 - seconds;
+    bannerMsg = '距离第一节课还有 ' + leftMin + '分' + leftSec + '秒';
+    dotClass = 'idle';
+  } else {
+    bannerMsg = '今日课程已全部结束';
+    dotClass = 'idle';
+  }
+  bannerText.textContent = bannerMsg;
+  bannerDot.className = 'banner-dot ' + dotClass;
+
+  // Daily summary
+  if (isSchoolDay) {
+    const todayCourses = timetableData.courses[dow - 1];
+    const totalClasses = todayCourses.filter(c => c && c !== '').length;
+    let greeting = hours < 12 ? '上午好！' : hours < 18 ? '下午好！' : '晚上好！';
+    let cpName = cp !== -1 ? timetableData.periods[cp].name : '休息时间';
+    dailySummary.innerHTML = greeting + '<br>今日共 <strong>' + totalClasses + '</strong> 节课。<br>当前是 ' + cpName + '。';
+  } else {
+    dailySummary.innerHTML = '今天是周末，没有课程安排。<br>可以好好休息，也可以适当复习功课。<br>劳逸结合，效率更高！';
+  }
+
+  // Highlight cells
+  highlightCells(isSchoolDay ? dow - 1 : -1, cp);
+}
+
+// ===== HIGHLIGHT CELLS =====
+function highlightCells(todayIdx, cpIdx) {
+  const allTds = tableBody.querySelectorAll('td.cell-course');
+  allTds.forEach(td => {
+    td.classList.remove('cell-current', 'cell-hit');
+  });
+
+  // Current period highlight (only on today's column)
+  if (cpIdx !== -1 && todayIdx !== -1 && todayIdx === state.activeDay) {
+    allTds.forEach(td => {
+      if (parseInt(td.dataset.day) === todayIdx && parseInt(td.dataset.period) === cpIdx) {
+        td.classList.add('cell-current');
+      }
+    });
+  }
+
+  // Search highlight
+  if (state.searchQuery.trim()) {
+    const q = state.searchQuery.trim().toLowerCase();
+    allTds.forEach(td => {
+      if (td.textContent.toLowerCase().includes(q)) {
+        td.classList.add('cell-hit');
+      }
+    });
+  }
+}
+
+// ===== MODAL =====
+function showModal(dayIdx, periodIdx) {
+  const course = timetableData.courses[dayIdx][periodIdx];
+  const period = timetableData.periods[periodIdx];
+  modalCourse.textContent = course;
+  modalPeriod.textContent = period.name;
+  modalTime.textContent = period.time;
+  modalDay.textContent = timetableData.days[dayIdx];
+  modalOverlay.classList.add('show');
+}
+
+function hideModal() {
+  modalOverlay.classList.remove('show');
+}
+
+// ===== NOTIFICATIONS =====
+function requestNotification() {
+  if (!('Notification' in window)) {
+    alert('您的浏览器不支持桌面通知。');
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    state.notifyGranted = true;
+    updateNotifyBtn();
+    return;
+  }
+  Notification.requestPermission().then(perm => {
+    if (perm === 'granted') {
+      state.notifyGranted = true;
+      updateNotifyBtn();
+    }
+  });
+}
+
+function updateNotifyBtn() {
+  const btn = $('btnNotify');
+  const label = $('btnNotifyLabel');
+  if (state.notifyGranted) {
+    btn.classList.add('granted');
+    label.textContent = '已开启';
+  } else {
+    btn.classList.remove('granted');
+    label.textContent = '通知';
+  }
+}
+
+function checkNotifications() {
+  if (!state.notifyGranted) return;
+  const now = new Date();
+  const dow = now.getDay();
+  if (dow < 1 || dow > 5) return;
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const totalMinutes = hours * 60 + minutes;
+
+  for (let i = 0; i < timetableData.periods.length; i++) {
+    const p = timetableData.periods[i];
+    const [sh, sm] = p.time.split('-')[0].split(':').map(Number);
+    const st = sh * 60 + sm;
+    const diff = st - totalMinutes;
+    const key = (dow - 1) + '-' + i;
+    if (diff > 0 && diff <= 5 && !state.notifiedPeriods[key]) {
+      state.notifiedPeriods[key] = true;
+      const course = timetableData.courses[dow - 1][i];
+      new Notification('课程提醒', {
+        body: '距离 ' + course + '（' + p.name + '）还有 ' + diff + ' 分钟，' + p.time,
+        icon: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%236366f1%22 width=%22100%22 height=%22100%22 rx=%2220%22/%3E%3Ctext x=%2250%22 y=%2265%22 text-anchor=%22middle%22 font-size=%2245%22 fill=%22white%22%3E📅%3C/text%3E%3C/svg%3E'
+      });
+    }
+  }
+
+  // Reset notified keys for past periods (new day)
+  Object.keys(state.notifiedPeriods).forEach(k => {
+    const d = parseInt(k.split('-')[0]);
+    if (d !== dow - 1) delete state.notifiedPeriods[k];
+  });
+}
+
+// ===== THEME =====
+function toggleTheme() {
+  state.darkMode = !state.darkMode;
+  document.body.classList.toggle('dark', state.darkMode);
+  const icon = $('btnThemeIcon');
+  const label = $('btnThemeLabel');
+  if (state.darkMode) {
+    icon.textContent = '☀️';
+    label.textContent = '明亮';
+  } else {
+    icon.textContent = '🌙';
+    label.textContent = '暗黑';
+  }
+}
+
+// ===== EVENTS =====
+function bindEvents() {
+  // Theme
+  $('btnTheme').addEventListener('click', toggleTheme);
+
+  // Print
+  $('btnPrint').addEventListener('click', () => window.print());
+
+  // Notify
+  $('btnNotify').addEventListener('click', requestNotification);
+
+  // Search
+  searchInput.addEventListener('input', () => {
+    state.searchQuery = searchInput.value;
+    const now = new Date();
+    const dow = now.getDay();
+    const isSchoolDay = (dow >= 1 && dow <= 5);
+    highlightCells(isSchoolDay ? dow - 1 : -1, state.currentPeriodIdx);
+  });
+
+  // Modal close
+  $('modalClose').addEventListener('click', hideModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) hideModal();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') hideModal();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+}
+
+// ===== START =====
+init();
+
+// Try auto-request notification (some browsers allow)
+if ('Notification' in window && Notification.permission === 'granted') {
+  state.notifyGranted = true;
+  updateNotifyBtn();
+}
+</script>
 </body>
 </html>
