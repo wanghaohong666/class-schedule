@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="初二1班智能课程表 - 实时课表、考试倒计时、暗黑模式、课程搜索">
 <title>初二1班智能课程表</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
 <style>
 /* ===== CSS Variables ===== */
 :root {
@@ -584,16 +586,17 @@ body.dark[data-theme="morandi"] {
 </head>
 <body>
 
-
-
 <!-- Notification Banner -->
+<header>
 <div class="banner" id="banner">
   <div class="banner-dot idle" id="bannerDot"></div>
   <span class="banner-text" id="bannerText">正在加载...</span>
   <span class="banner-time" id="bannerTime"></span>
 </div>
+</header>
 
 <!-- Main -->
+<main>
 <div class="main-wrap">
 
   <!-- Timetable Column -->
@@ -627,6 +630,7 @@ body.dark[data-theme="morandi"] {
   </div>
 
   <!-- Sidebar -->
+  <aside>
   <div class="sidebar-col">
     <div class="card">
       <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid var(--border-light);margin-bottom:16px;">今日概览</h3>
@@ -649,8 +653,9 @@ body.dark[data-theme="morandi"] {
       <div class="quote-text" id="dailyQuote">业精于勤，荒于嬉；行成于思，毁于随。</div>
       <div class="quote-author" id="quoteAuthor">—— 韩愈</div>
     </div>
-  </div>
+  </aside>
 </div>
+</main>
 
 <!-- Detail Modal -->
 <div class="modal-overlay" id="modalOverlay">
