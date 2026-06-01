@@ -37,8 +37,6 @@
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
   --input-border: rgba(99,102,241,0.30);
-  --btn-print-bg: #6366f1;
-  --btn-print-text: #ffffff;
 }
 
 body.dark {
@@ -71,10 +69,7 @@ body.dark {
   --modal-overlay: rgba(0,0,0,0.65);
   --modal-bg: rgba(30,27,58,0.94);
   --input-bg: rgba(30,27,58,0.60);
-  --input-border: rgba(129,140,248,0.35);
-  --btn-print-bg: #818cf8;
-  --btn-print-text: #0f0a2e;
-}
+  --input-border: rgba(129,140,248,0.35);}
 
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -171,11 +166,6 @@ body {
   border:1.5px solid var(--border-light);
 }
 .btn-theme:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
-.btn-print {
-  background:var(--btn-print-bg); color:var(--btn-print-text);
-  box-shadow:0 4px 14px var(--accent-glow);
-}
-.btn-print:hover { transform:translateY(-2px); box-shadow:0 6px 20px var(--accent-glow); }
 .btn-notify {
   background:var(--tab-bg); color:var(--tab-text);
   border:1.5px solid var(--border-light);
@@ -337,10 +327,7 @@ body {
   --modal-overlay: rgba(0,0,0,0.45);
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
-  --input-border: rgba(16,185,129,0.30);
-  --btn-print-bg: #10b981;
-  --btn-print-text: #ffffff;
-}
+  --input-border: rgba(16,185,129,0.30);}
 body.dark[data-theme="mint"] {
   --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #021f18 100%);
   --card-bg: rgba(6,78,59,0.78);
@@ -369,10 +356,7 @@ body.dark[data-theme="mint"] {
   --tab-text: #6ee7b7;
   --modal-bg: rgba(6,78,59,0.94);
   --input-bg: rgba(6,78,59,0.60);
-  --input-border: rgba(52,211,153,0.35);
-  --btn-print-bg: #34d399;
-  --btn-print-text: #022c22;
-}
+  --input-border: rgba(52,211,153,0.35);}
 
 /* ===== Multi-Theme: Warm Orange ===== */
 [data-theme="warm"] {
@@ -405,10 +389,7 @@ body.dark[data-theme="mint"] {
   --modal-overlay: rgba(0,0,0,0.45);
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
-  --input-border: rgba(249,115,22,0.30);
-  --btn-print-bg: #f97316;
-  --btn-print-text: #ffffff;
-}
+  --input-border: rgba(249,115,22,0.30);}
 body.dark[data-theme="warm"] {
   --bg-gradient: linear-gradient(135deg, #2d1406 0%, #431407 40%, #1c0a02 100%);
   --card-bg: rgba(67,20,7,0.78);
@@ -437,10 +418,7 @@ body.dark[data-theme="warm"] {
   --tab-text: #fdba74;
   --modal-bg: rgba(67,20,7,0.94);
   --input-bg: rgba(67,20,7,0.60);
-  --input-border: rgba(251,146,60,0.35);
-  --btn-print-bg: #fb923c;
-  --btn-print-text: #2d1406;
-}
+  --input-border: rgba(251,146,60,0.35);}
 
 /* ===== Multi-Theme: Morandi Gray ===== */
 [data-theme="morandi"] {
@@ -473,10 +451,7 @@ body.dark[data-theme="warm"] {
   --modal-overlay: rgba(0,0,0,0.40);
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
-  --input-border: rgba(148,163,184,0.30);
-  --btn-print-bg: #64748b;
-  --btn-print-text: #ffffff;
-}
+  --input-border: rgba(148,163,184,0.30);}
 body.dark[data-theme="morandi"] {
   --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0a0f1a 100%);
   --card-bg: rgba(30,41,59,0.78);
@@ -505,51 +480,51 @@ body.dark[data-theme="morandi"] {
   --tab-text: #94a3b8;
   --modal-bg: rgba(30,41,59,0.94);
   --input-bg: rgba(30,41,59,0.60);
-  --input-border: rgba(148,163,184,0.35);
-  --btn-print-bg: #94a3b8;
-  --btn-print-text: #0f172a;
-}
+  --input-border: rgba(148,163,184,0.35);}
 
-/* ===== Countdown Bar ===== */
-.countdown-bar {
-  position: sticky; top: 0; z-index: 950;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: #fff;
-  padding: 10px 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  font-size: 0.85rem;
+/* ===== Countdown Inline ===== */
+.countdown-inline {
+  text-align: center;
+  padding: 3px 16px 5px;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 12px rgba(99,102,241,0.3);
-  transition: background 0.4s ease;
-  flex-wrap: wrap;
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+  opacity: 0.85;
 }
-.countdown-item {
-  display: flex; align-items: center; gap: 5px;
-  transition: color 0.3s;
-}
-.countdown-days {
-  font-size: 1.15rem; font-weight: 700; min-width: 28px; text-align: center;
-}
-.countdown-divider {
-  width: 1px; height: 22px;
-  background: rgba(255,255,255,0.35);
-}
-.countdown-item.urgent {
-  color: #fecaca;
-  animation: countdown-pulse 1.5s ease-in-out infinite;
-}
-.countdown-item.warning {
-  color: #fed7aa;
-}
+.countdown-sep { margin: 0 8px; color: var(--text-muted); }
+.countdown-inline .urgent { color: #ef4444; animation: countdown-pulse 1.5s ease-in-out infinite; }
+.countdown-inline .warning { color: #f97316; }
 @keyframes countdown-pulse {
   0%,100% { opacity: 1; }
   50%     { opacity: 0.5; }
 }
 
+
+/* ===== Course Color Labels ===== */
+.cc-语文,.cc-英语早读 { --cc:#E74C3C; }
+.cc-数学 { --cc:#3498DB; }
+.cc-英语 { --cc:#27AE60; }
+.cc-物理 { --cc:#8E44AD; }
+.cc-生物,.cc-生物早读 { --cc:#16A085; }
+.cc-历史 { --cc:#E67E22; }
+.cc-地理 { --cc:#2ECC71; }
+.cc-道法 { --cc:#C0392B; }
+.cc-体育 { --cc:#5D6D7E; }
+.cc-音乐 { --cc:#E91E63; }
+.cc-美术 { --cc:#A1887F; }
+.cc-信息科技 { --cc:#00BCD4; }
+.cc-劳动 { --cc:#689F38; }
+.cc-心理健康 { --cc:#FF7043; }
+.cc-专题教育 { --cc:#5C6BC0; }
+.cc-综合实践 { --cc:#26A69A; }
+.cc-早读,.cc-升旗,.cc-跑操,.cc-早读/晨练,.cc-语文早读 { --cc:#90A4AE; }
+.cc-生地背书 { --cc:#6D4C41; }
+.cell-course[class*="cc-"] {
+  border-left: 4px solid var(--cc);
+  color: var(--cc);
+  font-weight: 700;
+}
 /* ===== Theme Picker ===== */
 .theme-picker {
   display: flex; gap: 8px; align-items: center;
@@ -610,23 +585,6 @@ body.dark[data-theme="morandi"] {
     z-index: 5;
   }
 }
-/* ===== Print ===== */
-@media print {
-  body { background:#fff !important; padding:0; }
-  .banner, .toolbar, .day-tabs, .sidebar-col, .modal-overlay { display:none !important; }
-  .main-wrap { display:block; max-width:100%; margin:0; }
-  .timetable-col { flex:none; min-width:auto; }
-  .card { background:#fff !important; box-shadow:none !important; border:1px solid #ddd !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; padding:12px !important; }
-  .timetable thead th { background:#4f46e5 !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .timetable tbody td { border-bottom:1px solid #ddd !important; }
-  .cell-morning { background:#e0e7ff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .cell-afternoon { background:#fef3c7 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .cell-memorize { background:#d1fae5 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .cell-break { background:#ede9fe !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .cell-current { animation:none !important; background:rgba(99,102,241,0.30) !important; }
-  .timetable tbody td.cell-course:hover { transform:none !important; box-shadow:none !important; background:inherit !important; }
-  .table-scroll { overflow:visible; }
-}
 
 /* ===== Responsive ===== */
 @media (max-width:1100px) {
@@ -657,20 +615,7 @@ body.dark[data-theme="morandi"] {
 </style>
 </head>
 <body>
-<!-- Countdowns -->
-<div class="countdown-bar" id="countdownBar">
-  <div class="countdown-item" id="huiKaoItem">
-    <span class="countdown-label">距地理生物会考还有</span>
-    <span class="countdown-days" id="huiKaoDays">--</span>
-    <span class="countdown-suffix">天</span>
-  </div>
-  <div class="countdown-divider"></div>
-  <div class="countdown-item" id="zhongKaoItem">
-    <span class="countdown-label">距中考还有</span>
-    <span class="countdown-days" id="zhongKaoDays">--</span>
-    <span class="countdown-suffix">天</span>
-  </div>
-</div>
+
 
 
 <!-- Notification Banner -->
@@ -678,6 +623,13 @@ body.dark[data-theme="morandi"] {
   <div class="banner-dot idle" id="bannerDot"></div>
   <span class="banner-text" id="bannerText">正在加载...</span>
   <span class="banner-time" id="bannerTime"></span>
+</div>
+
+<!-- Countdown Inline -->
+<div class="countdown-inline" id="countdownInline">
+  <span id="countdownHuiKao">会考 -- 天</span>
+  <span class="countdown-sep">|</span>
+  <span id="countdownZhongKao">中考 -- 天</span>
 </div>
 
 <!-- Main -->
@@ -702,7 +654,6 @@ body.dark[data-theme="morandi"] {
           🔔 <span id="btnNotifyLabel">通知</span>
         </button>
         <button class="btn btn-export" id="btnExport" title="导出为图片">📷 导出</button>
-        <button class="btn btn-print" id="btnPrint" title="一键打印课程表">🖨️ 打印</button>
       </div>
 
       <!-- Day Tabs -->
@@ -729,7 +680,7 @@ body.dark[data-theme="morandi"] {
     <div class="card">
       <h3 style="font-size:1.15rem;padding-bottom:12px;border-bottom:2px solid var(--border-light);margin-bottom:16px;">图例说明</h3>
       <div class="legend-grid">
-        <div class="legend-item"><span class="legend-swatch swatch-morning"></span>上午课程(45分钟)</div>
+        <div class="legend-item"><span class="legend-swatch swatch-morning"></span>上午课程(40分钟)</div>
         <div class="legend-item"><span class="legend-swatch swatch-afternoon"></span>下午课程(40分钟)</div>
         <div class="legend-item"><span class="legend-swatch swatch-memorize"></span>生地背书(课后)</div>
         <div class="legend-item"><span class="legend-swatch swatch-break"></span>早读/晨练</div>
@@ -760,10 +711,10 @@ const timetableData = {
   days: ['周一','周二','周三','周四','周五'],
   periods: [
     { name:'早读/晨练', time:'7:30-7:50',  duration:20, type:'break' },
-    { name:'第1节',     time:'8:00-8:45',  duration:45, type:'morning' },
-    { name:'第2节',     time:'9:00-9:45',  duration:45, type:'morning' },
-    { name:'第3节',     time:'10:15-11:00',duration:45, type:'morning' },
-    { name:'第4节',     time:'11:15-12:00',duration:45, type:'morning' },
+    { name:'第1节',     time:'8:00-8:40',  duration:40, type:'morning' },
+    { name:'第2节',     time:'9:00-9:40',  duration:40, type:'morning' },
+    { name:'第3节',     time:'10:15-10:55',duration:40, type:'morning' },
+    { name:'第4节',     time:'11:15-11:55',duration:40, type:'morning' },
     { name:'第5节',     time:'14:40-15:20',duration:40, type:'afternoon' },
     { name:'第6节',     time:'15:35-16:15',duration:40, type:'afternoon' },
     { name:'第7节',     time:'16:30-17:10',duration:40, type:'afternoon' },
@@ -836,39 +787,32 @@ function updateCountdowns() {
   const huiDiff = Math.ceil((HUI_KAO_DATE - now) / 86400000);
   const zhongDiff = Math.ceil((ZHONG_KAO_DATE - now) / 86400000);
 
-  const huiEl = document.getElementById('huiKaoDays');
-  const zhongEl = document.getElementById('zhongKaoDays');
-  const huiItem = document.getElementById('huiKaoItem');
-  const zhongItem = document.getElementById('zhongKaoItem');
-  const bar = document.getElementById('countdownBar');
+  const huiEl = document.getElementById('countdownHuiKao');
+  const zhongEl = document.getElementById('countdownZhongKao');
 
-  // 会考倒计时
+  // 会考
   if (huiDiff > 0) {
-    huiEl.textContent = huiDiff;
-    if (huiDiff <= 7) { huiItem.classList.add('urgent'); bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; }
-    else { huiItem.classList.remove('urgent'); }
+    huiEl.innerHTML = huiDiff <= 7
+      ? '距会考<span class="urgent">' + huiDiff + '</span>天'
+      : '距会考 ' + huiDiff + ' 天';
   } else if (huiDiff === 0) {
-    huiItem.textContent = '今天会考！加油！';
-    huiItem.classList.add('urgent');
-    bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+    huiEl.innerHTML = '<span class="urgent">今天会考！</span>';
   } else {
-    huiItem.textContent = '会考已结束';
-    huiItem.classList.remove('urgent');
+    huiEl.textContent = '会考已结束';
   }
 
-  // 中考倒计时
+  // 中考
   if (zhongDiff > 0) {
-    zhongEl.textContent = zhongDiff;
-    if (zhongDiff <= 7) { zhongItem.classList.add('urgent'); zhongItem.classList.remove('warning'); bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; }
-    else if (zhongDiff <= 30) { zhongItem.classList.add('warning'); zhongItem.classList.remove('urgent'); }
-    else { zhongItem.classList.remove('urgent','warning'); }
+    if (zhongDiff <= 7)
+      zhongEl.innerHTML = '距中考<span class="urgent">' + zhongDiff + '</span>天';
+    else if (zhongDiff <= 30)
+      zhongEl.innerHTML = '距中考<span class="warning">' + zhongDiff + '</span>天';
+    else
+      zhongEl.innerHTML = '距中考 ' + zhongDiff + ' 天';
   } else if (zhongDiff === 0) {
-    zhongItem.textContent = '今天中考！加油！';
-    zhongItem.classList.add('urgent');
-    bar.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+    zhongEl.innerHTML = '<span class="urgent">今天中考！</span>';
   } else {
-    zhongItem.textContent = '中考已结束';
-    zhongItem.classList.remove('urgent','warning');
+    zhongEl.textContent = '中考已结束';
   }
 }
 
@@ -1073,6 +1017,16 @@ function buildDayTabs() {
   });
 }
 
+
+// ===== COURSE COLORS =====
+const courseColors = {
+  '语文':'#E74C3C','数学':'#3498DB','英语':'#27AE60','物理':'#8E44AD','生物':'#16A085',
+  '历史':'#E67E22','地理':'#2ECC71','道法':'#C0392B','体育':'#5D6D7E','音乐':'#E91E63',
+  '美术':'#A1887F','信息科技':'#00BCD4','劳动':'#689F38','心理健康':'#FF7043',
+  '专题教育':'#5C6BC0','综合实践':'#26A69A','生地背书':'#6D4C41',
+  '升旗':'#90A4AE','跑操':'#90A4AE','英语早读':'#27AE60','生物早读':'#16A085','语文早读':'#E74C3C'
+};
+function getCourseColor(cname) { return courseColors[cname] || '#90A4AE'; }
 // ===== BUILD TABLE =====
 function buildTable() {
   // thead
@@ -1106,8 +1060,13 @@ function buildTable() {
     // course columns
     for (let c = 0; c < timetableData.days.length; c++) {
       const td = document.createElement('td');
-      td.textContent = timetableData.courses[c][r];
-      td.className = 'cell-course cell-' + period.type;
+      const courseName = timetableData.courses[c][r];
+      td.textContent = courseName;
+      td.className = 'cell-course cell-' + period.type + ' cc-' + courseName;
+      const cc = getCourseColor(courseName);
+      td.style.borderLeft = '4px solid ' + cc;
+      td.style.color = cc;
+      td.style.fontWeight = '700';
       td.dataset.day = c;
       td.dataset.period = r;
       td.addEventListener('click', () => showModal(c, r));
@@ -1404,8 +1363,6 @@ function bindEvents() {
   // Theme (dark/light)
   $('btnTheme').addEventListener('click', toggleTheme);
 
-  // Print
-  $('btnPrint').addEventListener('click', () => window.print());
 
   // Export
   $('btnExport').addEventListener('click', exportToImage);
