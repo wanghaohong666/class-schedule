@@ -707,6 +707,9 @@ const holidays = [
   { name:'国庆中秋',    start:'2026-10-01', end:'2026-10-08', totalDays:8  }
 ];
 
+const HUI_KAO_DATE = new Date(2026, 5, 30);   // 2026-06-30
+const ZHONG_KAO_DATE = new Date(2027, 5, 28); // 2027-06-28
+
 function dateStr(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function parseDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 
