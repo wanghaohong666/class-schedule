@@ -706,14 +706,23 @@ const dailyQuotes = [
 
 // ===== HOLIDAYS (2026 China) =====
 const holidays = [
-  { name:'寒假',        start:'2026-01-18', end:'2026-02-12', totalDays:26 },
+  { name:'寒假',        start:'2026-01-18', end:'2026-03-01', totalDays:43 },
   { name:'端午节',      start:'2026-06-19', end:'2026-06-21', totalDays:3  },
-  { name:'暑假',        start:'2026-07-05', end:'2026-08-31', totalDays:58 },
+  { name:'暑假',        start:'2026-07-11', end:'2026-08-31', totalDays:52 },
   { name:'国庆中秋',    start:'2026-10-01', end:'2026-10-08', totalDays:8  }
 ];
 
-const HUI_KAO_DATE = new Date(2026, 5, 30);   // 2026-06-30
-const ZHONG_KAO_DATE = new Date(2027, 5, 28); // 2027-06-28
+// 海口市考试时间（会考=八年级生物地理，中考=九年级）
+const HUI_KAO_DATE = new Date(2026, 5, 27);   // 2026-06-27
+const ZHONG_KAO_DATE = new Date(2027, 5, 25); // 2027-06-25
+
+// 海口市期中/期末考试（各校自定，按校历估算）
+const exams = [
+  { name:'期中考试', start:'2026-04-27', end:'2026-04-29' },
+  { name:'期末考试', start:'2026-07-06', end:'2026-07-09' },
+  { name:'期中考试', start:'2026-11-02', end:'2026-11-04' },
+  { name:'期末考试', start:'2027-01-11', end:'2027-01-13' }
+];
 
 function dateStr(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function parseDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
@@ -890,8 +899,8 @@ function updateAll() {
   const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
   currentWeekday.textContent = weekdays[dow];
 
-  // Week number (semester starts 2026-02-16 Monday)
-  const semesterStart = new Date(2026, 1, 16);
+  // Week number (semester starts 2026-03-02 Monday, 海口)
+  const semesterStart = new Date(2026, 2, 2);  // 2026-03-02 海口春季开学
   const weekDiff = Math.floor((now - semesterStart) / (7 * 24 * 60 * 60 * 1000)) + 1;
   currentWeekNum.textContent = '第 ' + weekDiff + ' 周';
 
@@ -1014,6 +1023,17 @@ function updateAll() {
     else cdText += zhongDiff + '天';
   }
 
+  // Exam countdown (nearest upcoming exam)
+  let examText = '';
+  for (const ex of exams) {
+    const exStart = parseDate(ex.start);
+    const exDiff = Math.ceil((exStart - now) / 86400000);
+    if (exDiff > 0 && exDiff <= 14) {
+      examText = ' | ' + ex.name + '还有' + exDiff + '天';
+      break;
+    }
+  }
+
   // Tomorrow preview (Sun-Thu, >=18:00)
   let tomorrowText = '';
   if (!holiday && (dow >= 0 && dow <= 4) && totalMinutes >= 1080) { // 18:00 = 1080 min
@@ -1024,7 +1044,7 @@ function updateAll() {
       tomorrowText = ' | 明日课程：' + tmList;
     }
   }
-  bannerText.textContent = bannerMsg + cdText + tomorrowText;
+  bannerText.textContent = bannerMsg + cdText + examText + tomorrowText;
   bannerDot.className = 'banner-dot ' + dotClass;
 
   // Daily summary
