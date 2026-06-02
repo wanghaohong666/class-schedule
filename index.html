@@ -182,10 +182,19 @@ body {
 /* day-today column highlight */
 .timetable thead th.day-today {
   font-weight:900 !important;
-  box-shadow:inset 0 -3px 0 var(--accent);
+}
+.timetable thead th.day-today::after {
+  content:"今";
+  font-size:0.65rem;
+  font-weight:600;
+  background:var(--accent);
+  color:#fff;
+  border-radius:8px;
+  padding:1px 5px;
+  margin-left:3px;
+  vertical-align:middle;
 }
 .timetable tbody td.day-today {
-  box-shadow: inset 0 0 0 2px var(--accent);
 }
 .table-scroll { overflow-x:auto; border-radius:16px; }
 .timetable {
