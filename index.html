@@ -252,10 +252,10 @@ body {
 .legend-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
 .legend-item { display:flex; align-items:center; gap:8px; font-size:0.85rem; }
 .legend-swatch { width:18px; height:18px; border-radius:5px; flex-shrink:0; }
-.swatch-morning   { background:rgba(224,231,255,0.85); border:1px solid #a5b4fc; }
-.swatch-afternoon { background:rgba(253,230,138,0.65); border:1px solid #fcd34d; }
-.swatch-memorize  { background:rgba(167,243,208,0.65); border:1px solid #6ee7b7; }
-.swatch-break     { background:rgba(233,213,255,0.70); border:1px solid #c4b5fd; }
+.swatch-morning   { background:var(--cell-morning); border:1px solid rgba(165,180,252,0.4); }
+.swatch-afternoon { background:var(--cell-afternoon); border:1px solid rgba(252,211,77,0.4); }
+.swatch-memorize  { background:var(--cell-memorize); border:1px solid rgba(110,231,183,0.4); }
+.swatch-break     { background:var(--cell-break); border:1px solid rgba(196,181,253,0.4); }
 .quote-card { background:linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color:#fff; }
 .quote-card h3 { color:#fff; border-bottom-color:rgba(255,255,255,0.3); }
 .quote-text { font-style:italic; font-size:1.05rem; line-height:1.6; text-align:center; padding:12px 0; }
@@ -325,7 +325,7 @@ body {
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
   --input-border: rgba(16,185,129,0.30);}
-body.dark[data-theme="mint"] {
+html[data-theme="mint"] body.dark {
   --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #021f18 100%);
   --card-bg: rgba(6,78,59,0.78);
   --card-border: rgba(16,185,129,0.22);
@@ -387,7 +387,7 @@ body.dark[data-theme="mint"] {
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
   --input-border: rgba(249,115,22,0.30);}
-body.dark[data-theme="warm"] {
+html[data-theme="warm"] body.dark {
   --bg-gradient: linear-gradient(135deg, #2d1406 0%, #431407 40%, #1c0a02 100%);
   --card-bg: rgba(67,20,7,0.78);
   --card-border: rgba(249,115,22,0.22);
@@ -449,7 +449,7 @@ body.dark[data-theme="warm"] {
   --modal-bg: rgba(255,255,255,0.94);
   --input-bg: rgba(255,255,255,0.65);
   --input-border: rgba(148,163,184,0.30);}
-body.dark[data-theme="morandi"] {
+html[data-theme="morandi"] body.dark {
   --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0a0f1a 100%);
   --card-bg: rgba(30,41,59,0.78);
   --card-border: rgba(148,163,184,0.20);
