@@ -123,11 +123,11 @@ body {
 
 /* ===== Main Layout ===== */
 .main-wrap {
-  max-width:1400px; margin:6px auto 18px;
+  max-width:none; margin:6px auto 18px; padding:0 16px;
   display:flex; gap:22px; flex-wrap:wrap;
 }
 .timetable-col { flex:3; min-width:320px; }
-.sidebar-col   { flex:1; min-width:260px; display:flex; flex-direction:column; gap:20px; }
+.sidebar-col   { flex:0 0 300px; min-width:260px; display:flex; flex-direction:column; gap:20px; }
 
 /* ===== Card ===== */
 .card {
@@ -571,7 +571,7 @@ html[data-theme="morandi"] body.dark {
 /* ===== Responsive ===== */
 @media (max-width:1100px) {
   .main-wrap { flex-direction:column; }
-  .sidebar-col { order:-1; flex-direction:row; flex-wrap:wrap; gap:12px; }
+  .sidebar-col { order:-1; flex:auto; flex-direction:row; flex-wrap:wrap; gap:12px; }
   .sidebar-col .card { flex:1; min-width:220px; }
 }
 @media (max-width:768px) {
